@@ -2,6 +2,7 @@
 import io
 import json
 import re
+import urllib.parse
 import urllib.request
 from pathlib import Path
 
@@ -42,7 +43,9 @@ GAMES = [
     },
 ]
 
-MUSIC_URL = "https://incompetech.com/music/royalty-free/mp3-royaltyfree/Son%20of%20a%20Rocket.mp3"
+MUSIC_CATALOG = "https://incompetech.com/music/royalty-free/pieces.json"
+MUSIC_BASE = "https://incompetech.com/music/royalty-free/mp3-royaltyfree/"
+MUSIC_TITLE = "Son of a Rocket"
 
 
 def fetch(url: str) -> bytes:
@@ -94,10 +97,17 @@ def download_game_assets():
 
 
 def download_music():
+    catalog = json.loads(fetch(MUSIC_CATALOG).decode("utf-8"))
+    pieces = catalog if isinstance(catalog, list) else catalog.get("pieces", [])
+    piece = next((p for p in pieces if p.get("title") == MUSIC_TITLE), None)
+    if not piece:
+        raise RuntimeError(f"Track not found in Incompetech catalog: {MUSIC_TITLE}")
+    filename = piece["filename"]
+    url = MUSIC_BASE + urllib.parse.quote(filename)
     out = ROOT / "assets" / "music" / "son-of-a-rocket.mp3"
     out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_bytes(fetch(MUSIC_URL))
-    print(f"saved {out.relative_to(ROOT)} <- Kevin MacLeod / Incompetech")
+    out.write_bytes(fetch(url))
+    print(f"saved {out.relative_to(ROOT)} <- {MUSIC_TITLE} / Kevin MacLeod / Incompetech")
 
 
 if __name__ == "__main__":
