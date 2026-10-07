@@ -22,6 +22,13 @@ const DECOR = [
   { left: 840, top: 1430, rot: -10, size: 310 },
 ];
 
+const SPARKS = Array.from({ length: 18 }, (_, i) => ({
+  x: (i * 137) % 980,
+  y: (i * 211) % 1680,
+  size: 8 + (i % 5) * 5,
+  drift: 10 + (i % 4) * 7,
+}));
+
 export const HookScene: React.FC<Props> = ({ episode, theme, segment }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
@@ -47,6 +54,15 @@ export const HookScene: React.FC<Props> = ({ episode, theme, segment }) => {
 
   const subEnter = pop(mainFrame, fps, 4 + words.length * 3, SPRINGS.snappy);
   const chipEnter = pop(mainFrame, fps, 0, SPRINGS.snappy);
+
+  const revealBoundary = baitFrames;
+  const mainBoundary = baitFrames + revealFrames;
+  const flashAtReveal = Math.max(0, 1 - Math.abs(frame - revealBoundary) / 5);
+  const flashAtMain = Math.max(0, 1 - Math.abs(frame - mainBoundary) / 5);
+  const flash = Math.max(flashAtReveal, flashAtMain);
+  const baitPulse = 1 + Math.sin(frame / 4) * 0.035;
+  const baitZoom = 1.08 + Math.min(1, frame / Math.max(1, baitFrames)) * 0.07;
+  const revealFrame = Math.max(0, frame - baitFrames);
 
   return (
     <SceneFrame duration={segment.duration}>
@@ -90,7 +106,7 @@ export const HookScene: React.FC<Props> = ({ episode, theme, segment }) => {
             position: "absolute",
             inset: 0,
             overflow: "hidden",
-            background: "#12070b",
+            background: "#13040e",
             zIndex: 20,
           }}
         >
@@ -99,12 +115,12 @@ export const HookScene: React.FC<Props> = ({ episode, theme, segment }) => {
               src={staticFile(episode.hook.baitImage)}
               style={{
                 position: "absolute",
-                inset: -80,
-                width: 1240,
-                height: 2080,
+                inset: -90,
+                width: 1260,
+                height: 2100,
                 objectFit: "cover",
-                transform: "scale(1.08)",
-                filter: "blur(42px) brightness(0.58) saturate(1.18)",
+                transform: `scale(${baitZoom})`,
+                filter: "blur(38px) brightness(0.68) saturate(1.5) contrast(1.08)",
               }}
             />
           )}
@@ -114,52 +130,103 @@ export const HookScene: React.FC<Props> = ({ episode, theme, segment }) => {
               position: "absolute",
               inset: 0,
               background:
-                "radial-gradient(circle at 50% 48%, rgba(255,130,160,0.16), rgba(0,0,0,0.18) 38%, rgba(0,0,0,0.72) 78%)",
+                "linear-gradient(135deg, rgba(255,0,110,0.36), rgba(255,179,0,0.16) 32%, rgba(0,238,255,0.24) 68%, rgba(87,0,255,0.32))",
+              mixBlendMode: "screen",
             }}
           />
 
           <div
             style={{
               position: "absolute",
-              top: 245,
-              left: 90,
-              right: 90,
+              inset: 34,
+              borderRadius: 46,
+              border: `7px solid ${frame % 12 < 6 ? "#ffef3a" : "#ff2f7d"}`,
+              boxShadow:
+                "0 0 34px rgba(255,239,58,0.75), inset 0 0 60px rgba(255,47,125,0.34), 0 0 90px rgba(0,238,255,0.2)",
+            }}
+          />
+
+          {[0, 1].map((row) => (
+            <div
+              key={row}
+              style={{
+                position: "absolute",
+                left: -120 + ((frame * 12) % 160),
+                right: -120,
+                [row === 0 ? "top" : "bottom"]: 94,
+                height: 42,
+                transform: `rotate(${row === 0 ? -2 : 2}deg)`,
+                background:
+                  "repeating-linear-gradient(135deg, #ffe928 0 34px, #111 34px 68px)",
+                boxShadow: "0 0 24px rgba(255,233,40,0.55)",
+                opacity: 0.92,
+              }}
+            />
+          ))}
+
+          {SPARKS.map((s, i) => (
+            <div
+              key={i}
+              style={{
+                position: "absolute",
+                left: s.x + Math.sin((frame + i * 9) / 8) * s.drift,
+                top: s.y + Math.cos((frame + i * 5) / 10) * s.drift,
+                width: s.size,
+                height: s.size,
+                borderRadius: 999,
+                background: i % 3 === 0 ? "#00f0ff" : i % 3 === 1 ? "#ff2f7d" : "#ffe928",
+                boxShadow: "0 0 24px currentColor",
+                opacity: 0.45 + (i % 4) * 0.1,
+              }}
+            />
+          ))}
+
+          <div
+            style={{
+              position: "absolute",
+              top: 228,
+              left: 74,
+              right: 74,
               display: "flex",
               justifyContent: "center",
             }}
           >
             <div
               style={{
-                padding: "18px 38px",
-                borderRadius: 24,
-                background: "#d5002b",
-                border: "4px solid rgba(255,255,255,0.9)",
-                boxShadow: "0 10px 0 rgba(0,0,0,0.42), 0 0 60px rgba(255,0,65,0.55)",
+                padding: "22px 44px",
+                borderRadius: 28,
+                background: "linear-gradient(135deg, #e80036, #ff2f7d)",
+                border: "5px solid #ffffff",
+                boxShadow:
+                  "0 12px 0 rgba(0,0,0,0.42), 0 0 50px rgba(255,47,125,0.9), 0 0 90px rgba(0,238,255,0.35)",
                 fontFamily: FONTS.display,
                 fontWeight: 900,
-                fontSize: 54,
+                fontSize: 62,
                 color: "#ffffff",
                 letterSpacing: 2,
-                textShadow: "0 4px 0 rgba(0,0,0,0.35)",
-                transform: `scale(${0.92 + pop(frame, fps, 0, SPRINGS.heavy) * 0.08}) rotate(-1deg)`,
+                textShadow: "0 5px 0 rgba(0,0,0,0.36)",
+                transform: `scale(${(0.92 + pop(frame, fps, 0, SPRINGS.heavy) * 0.08) * baitPulse}) rotate(-1deg)`,
               }}
             >
-              {episode.hook.bait}
+              ⚠ {episode.hook.bait} ⚠
             </div>
           </div>
 
           <div
             style={{
               position: "absolute",
-              bottom: 255,
-              left: 90,
-              right: 90,
+              bottom: 242,
+              left: 70,
+              right: 70,
               textAlign: "center",
               fontFamily: FONTS.display,
               fontWeight: 900,
-              fontSize: 44,
-              color: "rgba(255,255,255,0.88)",
-              textShadow: "0 4px 18px rgba(0,0,0,0.75)",
+              fontSize: 50,
+              color: "#ffffff",
+              letterSpacing: 2,
+              textShadow:
+                "5px 0 0 rgba(255,47,125,0.65), -5px 0 0 rgba(0,238,255,0.55), 0 6px 18px rgba(0,0,0,0.8)",
+              transform: `scale(${1 + Math.sin(frame / 5) * 0.03})`,
             }}
           >
             НЕ ЛИСТАЙ...
@@ -176,27 +243,102 @@ export const HookScene: React.FC<Props> = ({ episode, theme, segment }) => {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            padding: "0 78px",
+            padding: "0 72px",
+            overflow: "hidden",
             background:
-              "radial-gradient(circle at 50% 45%, rgba(255,111,0,0.22), rgba(18,8,28,0.94) 58%, #09030f 100%)",
+              "linear-gradient(135deg, #ff2f7d 0%, #ff7a00 30%, #7017ff 62%, #00c8ff 100%)",
           }}
         >
           <div
             style={{
+              position: "absolute",
+              inset: -280,
+              background:
+                "conic-gradient(from 0deg, rgba(255,255,255,0.04), rgba(255,255,255,0.32), rgba(255,255,255,0.03), rgba(255,255,255,0.24), rgba(255,255,255,0.04))",
+              transform: `rotate(${revealFrame * 5}deg) scale(1.15)`,
+              opacity: 0.65,
+            }}
+          />
+
+          {SPARKS.slice(0, 12).map((s, i) => (
+            <div
+              key={i}
+              style={{
+                position: "absolute",
+                left: (s.x + revealFrame * (i % 2 ? 8 : -6) + 1200) % 1080,
+                top: s.y,
+                width: s.size + 5,
+                height: s.size + 5,
+                transform: `rotate(${revealFrame * (8 + i)}deg)`,
+                background: i % 2 ? "#ffffff" : "#ffe928",
+                borderRadius: i % 3 ? 999 : 4,
+                boxShadow: "0 0 26px rgba(255,255,255,0.8)",
+                opacity: 0.7,
+              }}
+            />
+          ))}
+
+          <div
+            style={{
+              position: "absolute",
+              transform: "translateX(-7px)",
               fontFamily: FONTS.display,
               fontWeight: 900,
               fontSize: fitFontSize(episode.hook.baitReveal, {
                 maxWidth: 900,
-                maxSize: 104,
-                minSize: 54,
+                maxSize: 108,
+                minSize: 56,
+                ratio: 1.04,
+              }),
+              lineHeight: 1.08,
+              color: "#00efff",
+              textAlign: "center",
+              whiteSpace: "pre-line",
+              opacity: 0.65,
+            }}
+          >
+            {episode.hook.baitReveal}
+          </div>
+
+          <div
+            style={{
+              position: "absolute",
+              transform: "translateX(7px)",
+              fontFamily: FONTS.display,
+              fontWeight: 900,
+              fontSize: fitFontSize(episode.hook.baitReveal, {
+                maxWidth: 900,
+                maxSize: 108,
+                minSize: 56,
+                ratio: 1.04,
+              }),
+              lineHeight: 1.08,
+              color: "#ff2f7d",
+              textAlign: "center",
+              whiteSpace: "pre-line",
+              opacity: 0.65,
+            }}
+          >
+            {episode.hook.baitReveal}
+          </div>
+
+          <div
+            style={{
+              position: "relative",
+              fontFamily: FONTS.display,
+              fontWeight: 900,
+              fontSize: fitFontSize(episode.hook.baitReveal, {
+                maxWidth: 900,
+                maxSize: 108,
+                minSize: 56,
                 ratio: 1.04,
               }),
               lineHeight: 1.08,
               color: "#ffffff",
               textAlign: "center",
               whiteSpace: "pre-line",
-              textShadow: punchyTextShadow(theme.colors.accent, 10),
-              transform: `scale(${pop(frame - baitFrames, fps, 0, SPRINGS.heavy)}) rotate(-1deg)`,
+              textShadow: "0 7px 0 rgba(0,0,0,0.28), 0 0 36px rgba(255,255,255,0.55)",
+              transform: `scale(${pop(revealFrame, fps, 0, SPRINGS.heavy)}) rotate(-1deg)`,
             }}
           >
             {episode.hook.baitReveal}
@@ -217,6 +359,7 @@ export const HookScene: React.FC<Props> = ({ episode, theme, segment }) => {
             alignItems: "center",
             justifyContent: "center",
             gap: 54,
+            transform: `scale(${1 + Math.max(0, 1 - mainFrame / 8) * 0.08})`,
           }}
         >
           {issue && (
@@ -296,6 +439,32 @@ export const HookScene: React.FC<Props> = ({ episode, theme, segment }) => {
             <ProgressTrack theme={theme} current={-1} completed={0} width={820} nodeSize={88} animateIn />
           </div>
         </div>
+      )}
+
+      {flash > 0 && (
+        <>
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              zIndex: 90,
+              background: "#ffffff",
+              opacity: flash * 0.82,
+              mixBlendMode: "screen",
+            }}
+          />
+          <div
+            style={{
+              position: "absolute",
+              inset: -180,
+              zIndex: 89,
+              background:
+                "radial-gradient(circle at 50% 50%, rgba(255,255,255,0.95), rgba(255,235,0,0.5) 22%, rgba(255,0,128,0.42) 48%, rgba(0,220,255,0) 72%)",
+              transform: `scale(${0.65 + flash * 0.7})`,
+              opacity: flash,
+            }}
+          />
+        </>
       )}
     </SceneFrame>
   );
