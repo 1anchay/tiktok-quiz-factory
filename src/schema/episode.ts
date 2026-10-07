@@ -69,6 +69,8 @@ export const EpisodeSchema = z.object({
   format: z.literal("five-levels").default("five-levels"),
   hook: z.object({
     bait: z.string().max(48).optional(),
+    baitImage: assetPath.optional(),
+    baitReveal: z.string().max(72).optional(),
     title: z.string().min(1).max(60),
     subtitle: z.string().max(60).optional(),
   }),
@@ -104,6 +106,7 @@ export function formatZodError(error: z.ZodError): string[] {
 /** Every asset path an episode references, relative to `assets/`. */
 export function collectAssetRefs(episode: Episode): string[] {
   const refs = new Set<string>();
+  if (episode.hook.baitImage) refs.add(episode.hook.baitImage);
   for (const level of [...episode.levels, episode.boss]) {
     for (const clue of level.clues) if (clue.image) refs.add(clue.image);
   }
