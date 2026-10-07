@@ -1,4 +1,4 @@
-name: Render TikTok Demos
+name: Render TikTok Episode
 
 on:
   workflow_dispatch:
@@ -26,29 +26,27 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Validate all episodes
-        run: npm run validate
+      - name: Generate original royalty-free audio
+        run: npm run assets:audio
+
+      - name: Validate episode 001
+        run: npm run validate -- episode-001
 
       - name: Typecheck
         run: npm run typecheck
 
-      - name: Render episode 001 screenshots
+      - name: Render screenshots
         run: npm run screenshot -- episode-001
 
-      - name: Render episode 002 screenshots
-        run: npm run screenshot -- episode-002
+      - name: Render MP4
+        run: npm run make -- episode-001 --force
 
-      - name: Render all MP4s
-        run: npm run batch -- --force
-
-      - name: Upload renders
+      - name: Upload render
         uses: actions/upload-artifact@v4
         with:
-          name: tiktok-quiz-renders
+          name: episode-001-slow-pacing
           path: |
             output/episode-001.mp4
-            output/episode-002.mp4
             output/screenshots/episode-001/*.png
-            output/screenshots/episode-002/*.png
           if-no-files-found: error
           retention-days: 14
