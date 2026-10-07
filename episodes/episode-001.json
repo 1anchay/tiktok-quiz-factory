@@ -76,7 +76,7 @@
   },
   "timing": {
     "hook": 1.3,
-    "levelIntro": 0.7,
+    "levelIntro": 1.4,
     "countdown": 2,
     "reveal": 0.8,
     "bossIntro": 0.8,
