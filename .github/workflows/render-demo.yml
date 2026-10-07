@@ -1,4 +1,4 @@
-name: Render TikTok Demo
+name: Render TikTok Demos
 
 on:
   workflow_dispatch:
@@ -6,7 +6,7 @@ on:
 jobs:
   render:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
 
     env:
       RENDER_CONCURRENCY: "1"
@@ -26,24 +26,29 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Validate episode
-        run: npm run validate -- episode-001
+      - name: Validate all episodes
+        run: npm run validate
 
       - name: Typecheck
         run: npm run typecheck
 
-      - name: Render screenshots
+      - name: Render episode 001 screenshots
         run: npm run screenshot -- episode-001
 
-      - name: Render MP4
-        run: npm run make -- episode-001 --force
+      - name: Render episode 002 screenshots
+        run: npm run screenshot -- episode-002
 
-      - name: Upload render artifact
+      - name: Render all MP4s
+        run: npm run batch -- --force
+
+      - name: Upload renders
         uses: actions/upload-artifact@v4
         with:
-          name: episode-001-render
+          name: tiktok-quiz-renders
           path: |
             output/episode-001.mp4
+            output/episode-002.mp4
             output/screenshots/episode-001/*.png
+            output/screenshots/episode-002/*.png
           if-no-files-found: error
           retention-days: 14
