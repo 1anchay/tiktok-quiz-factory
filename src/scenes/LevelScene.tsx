@@ -2,10 +2,8 @@ import React from "react";
 import { useCurrentFrame, useVideoConfig } from "remotion";
 import { AnswerBanner } from "../components/AnswerBanner";
 import { CLUE_STAGGER, ClueGrid } from "../components/ClueGrid";
-import { Countdown } from "../components/Countdown";
 import { LevelHeader } from "../components/LevelHeader";
 import { SceneFrame } from "../components/SceneFrame";
-import { LAYOUT } from "../engine/layout";
 import type { Segment } from "../engine/timeline";
 import type { Episode, Level } from "../schema/episode";
 import { DIFFICULTY_LABELS, type Theme } from "../themes";
@@ -17,7 +15,6 @@ interface Props {
   segment: Segment;
 }
 
-const COUNTDOWN_SIZE = 250;
 
 export const LevelScene: React.FC<Props> = ({ episode, level, theme, segment }) => {
   const frame = useCurrentFrame();
@@ -43,21 +40,6 @@ export const LevelScene: React.FC<Props> = ({ episode, level, theme, segment }) 
         borderColor={chipColor}
         glowColor={theme.colors.primary}
       />
-
-      <div
-        style={{
-          position: "absolute",
-          left: (1080 - COUNTDOWN_SIZE) / 2,
-          top: LAYOUT.gridCenterY - COUNTDOWN_SIZE / 2,
-        }}
-      >
-        <Countdown
-          start={segment.countdownStart}
-          seconds={segment.countdownSeconds}
-          size={COUNTDOWN_SIZE}
-          colors={[theme.colors.primary, theme.colors.accent, theme.colors.secondary]}
-        />
-      </div>
 
       <AnswerBanner
         start={segment.revealStart}
