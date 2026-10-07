@@ -1,0 +1,86 @@
+{
+  "episode": "episode-002",
+  "size": 720,
+  "images": [
+    {
+      "path": "images/portal-2/portal-gun.jpg",
+      "prompt": "Square 1:1 cinematic clue image for Portal 2. A sleek white handheld portal device with black mechanical claws and blue-orange energy glow, inside a sterile white modular science test chamber with clean panels. Strongly recognizable Portal 2 visual language and materials, polished game-like digital art, one clear subject, no people, no text, no letters, no logo, no watermark, no UI."
+    },
+    {
+      "path": "images/portal-2/companion-cube.jpg",
+      "prompt": "Square 1:1 cinematic clue image for Portal 2. A weighted companion cube, white and gray mechanical cube with subtle pink heart-like center details, standing inside a bright white futuristic test chamber. Strong Portal 2 visual language, polished game-like render, one clear subject, no text, no logo, no watermark, no UI."
+    },
+    {
+      "path": "images/portal-2/test-chamber.jpg",
+      "prompt": "Square 1:1 cinematic environmental clue image for Portal 2. Empty white modular science test chamber, glossy white wall panels, dark mechanical gaps, observation glass, cool sterile lighting, recognizable Aperture-style test environment without any logos or writing. Polished realistic game render, no text, no watermark, no UI."
+    },
+    {
+      "path": "images/portal-2/turret.jpg",
+      "prompt": "Square 1:1 cinematic clue image for Portal 2. A slim white three-legged sentry turret with black mechanical joints and a glowing red central eye, standing in a sterile white test chamber. Strong Portal 2 aesthetic, polished game-like render, centered subject, no text, no logo, no watermark, no UI."
+    },
+    {
+      "path": "images/subnautica/seamoth.jpg",
+      "prompt": "Square 1:1 cinematic clue image for Subnautica. A compact white and yellow one-person futuristic underwater submersible similar to a Seamoth, floating above a vibrant alien coral reef in bright tropical blue water. Strong Subnautica visual language, colorful polished game-like 3D render, no text, no logo, no watermark, no UI."
+    },
+    {
+      "path": "images/subnautica/oxygen-tank.jpg",
+      "prompt": "Square 1:1 cinematic clue image for Subnautica. Futuristic scuba oxygen tank and compact survival diving equipment, white yellow and blue industrial sci-fi design, resting near an alien coral reef underwater. Strong Subnautica aesthetic, polished colorful game-like render, no text, no logo, no watermark, no UI."
+    },
+    {
+      "path": "images/subnautica/glowing-coral.jpg",
+      "prompt": "Square 1:1 cinematic environmental clue image for Subnautica. Dense alien coral reef with luminous blue purple and green bioluminescent plants, clear tropical ocean water, strange organic formations and small fish silhouettes. Strong Subnautica visual style, vibrant polished game-like 3D scene, no text, no logo, no watermark, no UI."
+    },
+    {
+      "path": "images/subnautica/deep-creature.jpg",
+      "prompt": "Square 1:1 cinematic clue image for Subnautica. Huge predatory alien sea creature silhouette emerging from deep dark blue ocean water, long pale body, faint red bioluminescent accents, diver-scale sense of danger. Strong Subnautica atmosphere, dramatic game-like 3D render, no text, no logo, no watermark, no UI."
+    },
+    {
+      "path": "images/bioshock/lighthouse.jpg",
+      "prompt": "Square 1:1 cinematic clue image for BioShock. A solitary early-20th-century lighthouse on a tiny rocky island in a dark stormy ocean, warm light glowing from the top, dramatic waves and mist. Strong BioShock mood and retro atmosphere, polished realistic game-like render, no text, no logo, no watermark, no UI."
+    },
+    {
+      "path": "images/bioshock/diving-helmet.jpg",
+      "prompt": "Square 1:1 cinematic clue image for BioShock. Heavy antique brass deep-sea diving helmet with large round portholes and industrial bolts, intimidating Big-Daddy-like retro machinery aesthetic, dark underwater art-deco setting. Strong BioShock visual language, polished game-like render, no text, no logo, no watermark, no UI."
+    },
+    {
+      "path": "images/bioshock/plasmid-hand.jpg",
+      "prompt": "Square 1:1 cinematic clue image for BioShock. Close-up human hand crackling with bright blue electrical genetic power beside a retro glass syringe, moody art-deco laboratory background, 1940s retro-futuristic atmosphere. Strong BioShock visual language, polished game-like render, no text, no logo, no watermark, no UI."
+    },
+    {
+      "path": "images/bioshock/rapture-corridor.jpg",
+      "prompt": "Square 1:1 cinematic environmental clue image for BioShock. Luxurious decaying underwater art-deco corridor, brass trim, dark red carpet, glass windows showing deep ocean outside, water leaks and warm vintage lamps. Strong Rapture-like BioShock atmosphere, polished realistic game render, no text, no logo, no watermark, no UI."
+    },
+    {
+      "path": "images/resident-evil-7/cassette-recorder.jpg",
+      "prompt": "Square 1:1 cinematic clue image for Resident Evil 7. Old cassette tape recorder on a stained wooden table inside a decaying rural Louisiana-style house, dirty walls, weak yellow lamp, oppressive survival-horror mood. Strong Resident Evil 7 visual language, photorealistic game-like render, no text, no logo, no watermark, no UI."
+    },
+    {
+      "path": "images/resident-evil-7/mold-corridor.jpg",
+      "prompt": "Square 1:1 cinematic environmental clue image for Resident Evil 7. Narrow rotting corridor inside an abandoned rural house, black mold spreading across walls and floor, peeling wallpaper, single dim bulb, damp terrifying atmosphere. Strong Resident Evil 7 style, photorealistic survival-horror game render, no text, no logo, no watermark, no UI."
+    },
+    {
+      "path": "images/resident-evil-7/first-aid-bottle.jpg",
+      "prompt": "Square 1:1 cinematic clue image for Resident Evil 7. Grimy translucent first-aid medicine bottle as the clear main subject on an old wooden shelf, decayed horror-house background, sickly warm lighting. Strong Resident Evil 7 survival-horror aesthetic, photorealistic game-like render, no readable label, no text, no logo, no watermark, no UI."
+    },
+    {
+      "path": "images/resident-evil-7/old-kitchen.jpg",
+      "prompt": "Square 1:1 cinematic environmental clue image for Resident Evil 7. Filthy old southern farmhouse kitchen, rotting food, rusted utensils, stained cabinets, dirty dinner table and weak overhead light, extremely unsettling but non-gory survival-horror atmosphere. Strong Resident Evil 7 aesthetic, photorealistic game render, no text, no logo, no watermark, no UI."
+    },
+    {
+      "path": "images/control/red-phone.jpg",
+      "prompt": "Square 1:1 cinematic clue image for Control. Bright red old-fashioned government hotline telephone as the clear main subject on a dark desk, brutalist concrete office background, deep black shadows and saturated red paranormal lighting. Strong Control visual language, polished realistic game render, no text, no logo, no watermark, no UI."
+    },
+    {
+      "path": "images/control/brutalist-corridor.jpg",
+      "prompt": "Square 1:1 cinematic environmental clue image for Control. Vast impossible brutalist concrete government-office corridor, monolithic geometric architecture, suspended dust, red emergency light spilling through the space, surreal paranormal mood. Strong Control aesthetic, polished realistic game-like render, no text, no logo, no watermark, no UI."
+    },
+    {
+      "path": "images/control/levitating-chair.jpg",
+      "prompt": "Square 1:1 cinematic clue image for Control. A plain office chair levitating several feet above the floor in a brutalist government office, scattered papers floating around it, red paranormal light, uncanny telekinetic atmosphere. Strong Control visual language, polished realistic game render, no text, no logo, no watermark, no UI."
+    },
+    {
+      "path": "images/control/black-pyramid.jpg",
+      "prompt": "Square 1:1 cinematic clue image for Control. Huge matte-black inverted pyramid floating in a surreal endless black-and-red astral space, minimal brutalist geometry and dramatic red glow, mysterious paranormal mood. Strong Control visual language, polished game-like render, no text, no logo, no watermark, no UI."
+    }
+  ]
+}
