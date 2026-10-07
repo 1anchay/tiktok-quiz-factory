@@ -107,7 +107,8 @@
     ]
   },
   "music": {
-    "volume": 0,
+    "track": "music/digital-lemonade.mp3",
+    "volume": 0.23,
     "sfxVolume": 0.58
   },
   "cta": {
@@ -133,10 +134,11 @@
     "language": "ru",
     "hook_variant": "18plus-fruit-misdirection-v2",
     "asset_source": "official-steam-screenshots",
-    "music_source": "TikTok official music library at publish time",
+    "music_source": "Digital Lemonade — Kevin MacLeod / Incompetech (CC BY 4.0)",
     "goal": "retention-hook-test",
     "tiktok_sound_target": "Sky — Playboi Carti",
     "tiktok_sound_mix": "Add from TikTok official music library; added sound ~15-20%, original sound 100%; align a strong beat with 2.0s reveal",
-    "bait_image_source": "Wikimedia Commons: Peach close-up2.jpg by liz west, CC BY 2.0"
+    "bait_image_source": "Wikimedia Commons: Peach close-up2.jpg by liz west, CC BY 2.0",
+    "revision": "18plus-color-hook-music-v3"
   }
 }
