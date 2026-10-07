@@ -58,17 +58,30 @@ def steam_screenshots(app_id: int):
 
 def download_game_assets():
     for game in GAMES:
+        planned = [
+            (n, index, ROOT / "assets" / "images" / game["folder"] / f"clue-{n}.jpg")
+            for n, index in enumerate(game["indices"], start=1)
+        ]
+        missing = [(n, index, out) for n, index, out in planned if not out.exists() or out.stat().st_size < 10000]
+
+        if not missing:
+            print(f"all Steam clues already present: {game['folder']}")
+            continue
+
         shots = steam_screenshots(game["app_id"])
-        for n, index in enumerate(game["indices"], start=1):
+        for n, index, out in missing:
             raw = fetch(shots[index % len(shots)])
-            out = ROOT / "assets" / "images" / game["folder"] / f"clue-{n}.jpg"
             save_square(raw, out)
             print(f"saved {out.relative_to(ROOT)} <- Steam screenshot #{index + 1}")
 
 
 def download_hook_image():
-    raw = fetch(HOOK_IMAGE_URL)
     out = ROOT / "assets" / "images" / "hooks" / "episode-003-bait.jpg"
+    if out.exists() and out.stat().st_size >= 10000:
+        print(f"hook image already present: {out.relative_to(ROOT)}")
+        return
+
+    raw = fetch(HOOK_IMAGE_URL)
     with Image.open(io.BytesIO(raw)) as im:
         im = im.convert("RGB")
         w, h = im.size
