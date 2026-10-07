@@ -3,11 +3,9 @@ import { AbsoluteFill, interpolate, useCurrentFrame, useVideoConfig } from "remo
 import { clamp, pop, pulse, SPRINGS } from "../animations";
 import { AnswerBanner } from "../components/AnswerBanner";
 import { CLUE_STAGGER, ClueGrid } from "../components/ClueGrid";
-import { Countdown } from "../components/Countdown";
 import { GlitchText } from "../components/GlitchText";
 import { LevelHeader } from "../components/LevelHeader";
 import { SceneFrame } from "../components/SceneFrame";
-import { LAYOUT } from "../engine/layout";
 import type { Segment } from "../engine/timeline";
 import type { Episode } from "../schema/episode";
 import type { Theme } from "../themes";
@@ -20,7 +18,6 @@ interface Props {
   segment: Segment;
 }
 
-const COUNTDOWN_SIZE = 270;
 
 export const BossScene: React.FC<Props> = ({ episode, theme, segment }) => {
   const frame = useCurrentFrame();
@@ -64,9 +61,6 @@ export const BossScene: React.FC<Props> = ({ episode, theme, segment }) => {
             glowColor={ember}
             boss
           />
-          <div style={{ position: "absolute", left: (1080 - COUNTDOWN_SIZE) / 2, top: LAYOUT.gridCenterY - COUNTDOWN_SIZE / 2 }}>
-            <Countdown start={segment.countdownStart} seconds={segment.countdownSeconds} size={COUNTDOWN_SIZE} colors={[ember, red, red]} />
-          </div>
           {boss.revealAnswer ? (
             <AnswerBanner
               start={segment.revealStart}
