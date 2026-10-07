@@ -81,6 +81,7 @@ export const BossScene: React.FC<Props> = ({ episode, theme, segment }) => {
               start={segment.revealStart}
               label={boss.commentPrompt}
               text="???"
+              maxFontSize={150}
               background={red}
               textColor="#ffffff"
               burstColors={[red, ember, theme.boss.ember, "#ffffff"]}

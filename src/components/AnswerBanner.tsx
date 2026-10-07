@@ -15,10 +15,11 @@ interface Props {
   textColor?: string;
   burstColors: string[];
   rotate?: number;
+  maxFontSize?: number;
 }
 
 /** Slanted banner that slams across the grid with a light flash and confetti burst. */
-export const AnswerBanner: React.FC<Props> = ({ start, label, text, background, textColor = "#0a0a14", burstColors, rotate = -4 }) => {
+export const AnswerBanner: React.FC<Props> = ({ start, label, text, background, textColor = "#0a0a14", burstColors, rotate = -4, maxFontSize = 118 }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   if (frame < start) return null;
@@ -26,7 +27,7 @@ export const AnswerBanner: React.FC<Props> = ({ start, label, text, background, 
   const enter = pop(frame, fps, start, SPRINGS.snappy);
   const labelEnter = pop(frame, fps, start + 4, SPRINGS.pop);
   const flash = interpolate(frame, [start, start + 10], [0.85, 0], clamp);
-  const fontSize = fitFontSize(text, { maxWidth: 820, maxSize: 118, minSize: 54 });
+  const fontSize = fitFontSize(text, { maxWidth: 820, maxSize: maxFontSize, minSize: 54 });
 
   return (
     <>

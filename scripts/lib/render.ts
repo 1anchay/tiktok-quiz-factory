@@ -14,6 +14,9 @@ const COMPOSITION_ID = "QuizEpisode";
 export function concurrency() {
   const fromEnv = Number(process.env.RENDER_CONCURRENCY);
   if (fromEnv > 0) return fromEnv;
+  // Headless Chrome in containerised Linux (CI, sandboxes) is unstable with parallel tabs.
+  // Windows/macOS use most cores. Override with RENDER_CONCURRENCY=N.
+  if (process.platform === "linux") return 1;
   return Math.max(1, Math.min(8, Math.floor(os.cpus().length * 0.75)));
 }
 
@@ -45,28 +48,41 @@ export async function renderEpisodeVideo(serveUrl: string, episode: Episode) {
 
   let lastPct = -1;
   const started = Date.now();
-  await renderMedia({
-    serveUrl,
-    composition,
-    inputProps,
-    codec: "h264",
-    pixelFormat: "yuv420p",
-    crf: 18,
-    audioCodec: "aac",
-    audioBitrate: "192k",
-    imageFormat: "jpeg",
-    jpegQuality: 92,
-    concurrency: concurrency(),
-    outputLocation: tmpLocation,
-    overwrite: true,
-    onProgress: ({ progress }) => {
-      const pct = Math.floor(progress * 100);
-      if (pct !== lastPct && pct % 5 === 0) {
-        lastPct = pct;
-        process.stdout.write(`\r  rendering ${episode.id}: ${String(pct).padStart(3)}%`);
-      }
-    },
-  });
+  const run = (threads: number) =>
+    renderMedia({
+      serveUrl,
+      composition,
+      inputProps,
+      codec: "h264",
+      pixelFormat: "yuv420p",
+      crf: 18,
+      audioCodec: "aac",
+      audioBitrate: "192k",
+      imageFormat: "jpeg",
+      jpegQuality: 92,
+      concurrency: threads,
+      outputLocation: tmpLocation,
+      overwrite: true,
+      logLevel: "error",
+      onProgress: ({ progress }) => {
+        const pct = Math.floor(progress * 100);
+        if (pct !== lastPct && pct % 5 === 0) {
+          lastPct = pct;
+          process.stdout.write(`\r  rendering ${episode.id}: ${String(pct).padStart(3)}%  (concurrency ${threads})`);
+        }
+      },
+    });
+
+  const threads = concurrency();
+  try {
+    await run(threads);
+  } catch (err) {
+    // Some sandboxed Linux/CI hosts crash Chrome when several tabs render in parallel.
+    if (threads === 1 || !/target closed|crashed/i.test((err as Error).message)) throw err;
+    console.warn(`\n  ! browser crashed with concurrency ${threads}; retrying with concurrency 1`);
+    lastPct = -1;
+    await run(1);
+  }
   fs.renameSync(tmpLocation, outputLocation);
   const seconds = composition.durationInFrames / composition.fps;
   console.log(`\n  ✓ ${path.relative(process.cwd(), outputLocation)}  (${seconds.toFixed(1)}s video, rendered in ${((Date.now() - started) / 1000).toFixed(0)}s)`);

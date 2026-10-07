@@ -91,7 +91,7 @@ export const ProgressTrack: React.FC<Props> = ({
                   letterSpacing: isBoss ? 1 : 0,
                 }}
               >
-                {done ? <Check size={size * 0.5} /> : isBoss ? "BOSS" : i + 1}
+                {isBoss ? (done ? <span style={{ fontSize: size * 0.5 }}>?</span> : "BOSS") : done ? <Check size={size * 0.5} /> : i + 1}
               </div>
             </div>
           );
