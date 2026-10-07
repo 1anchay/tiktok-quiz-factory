@@ -16,8 +16,8 @@ export const LAYOUT = {
   progressTop: 180,
   headerTop: 300,
   questionTop: 448,
-  gridTop: 570,
-  gridWidth: 880,
+  gridTop: 575,
+  gridWidth: 920,
   gridGap: 28,
   get cardSize() {
     return (this.gridWidth - this.gridGap) / 2;

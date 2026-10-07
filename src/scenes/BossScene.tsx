@@ -53,6 +53,7 @@ export const BossScene: React.FC<Props> = ({ episode, theme, segment }) => {
             chipColor={red}
             glowColor={red}
             delay={introEnd}
+            glitch
           />
           <ClueGrid
             clues={boss.clues}
@@ -147,7 +148,7 @@ const BossIntro: React.FC<{ theme: Theme; title: string; subtitle: string; end: 
       {stripe(1400, -1, 3)}
       <AbsoluteFill style={{ alignItems: "center", justifyContent: "center", gap: 30 }}>
         <div style={{ transform: `scale(${interpolate(slam, [0, 1], [3.2, 1])})`, textShadow: glow(red, 1.4) }}>
-          <GlitchText text={title} fontFamily={FONTS.display} fontSize={fitFontSize(title, { maxWidth: 900, maxSize: 300, minSize: 120 })} intensity={1.2} />
+          <GlitchText text={title} fontFamily={FONTS.display} fontSize={fitFontSize(title, { maxWidth: 820, maxSize: 280, minSize: 110 })} intensity={1.2} />
         </div>
         <div
           style={{

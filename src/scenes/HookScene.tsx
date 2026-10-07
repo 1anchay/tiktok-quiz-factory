@@ -18,8 +18,8 @@ interface Props {
 const DECOR = [
   { left: -70, top: 250, rot: -14, size: 330 },
   { left: 800, top: 300, rot: 12, size: 320 },
-  { left: -90, top: 1330, rot: 10, size: 300 },
-  { left: 830, top: 1290, rot: -10, size: 310 },
+  { left: -90, top: 1460, rot: 10, size: 300 },
+  { left: 840, top: 1430, rot: -10, size: 310 },
 ];
 
 export const HookScene: React.FC<Props> = ({ episode, theme, segment }) => {
@@ -101,7 +101,7 @@ export const HookScene: React.FC<Props> = ({ episode, theme, segment }) => {
           {words.map((word, i) => {
             const enter = pop(frame, fps, 4 + i * 4, SPRINGS.heavy);
             const hasDigit = /\d/.test(word);
-            const size = hasDigit ? 210 : fitFontSize(word, { maxWidth: 900, maxSize: 138, minSize: 70 });
+            const size = hasDigit ? 210 : fitFontSize(word, { maxWidth: 860, maxSize: 138, minSize: 64, ratio: 1.08 });
             const wobble = hasDigit ? 1 + pulse(frame, 16) * 0.06 : 1;
             return (
               <div

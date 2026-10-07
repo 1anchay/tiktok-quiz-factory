@@ -4,7 +4,7 @@
  */
 export function fitFontSize(
   text: string,
-  { maxWidth, maxSize, minSize = 28, ratio = 0.8, maxLines = 1 }: {
+  { maxWidth, maxSize, minSize = 28, ratio = 0.95, maxLines = 1 }: {
     maxWidth: number;
     maxSize: number;
     minSize?: number;

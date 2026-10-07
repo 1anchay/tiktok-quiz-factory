@@ -86,7 +86,7 @@ export const ProgressTrack: React.FC<Props> = ({
                   transform: `rotate(${isBoss ? -45 : 0}deg)`,
                   fontFamily: FONTS.display,
                   fontWeight: 900,
-                  fontSize: isBoss ? size * 0.3 : size * 0.42,
+                  fontSize: isBoss ? size * 0.2 : size * 0.42,
                   color: done || active || isBoss ? "#0a0a14" : rgba("#ffffff", 0.7),
                   letterSpacing: isBoss ? 1 : 0,
                 }}

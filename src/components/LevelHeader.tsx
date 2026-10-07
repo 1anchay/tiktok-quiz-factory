@@ -4,6 +4,7 @@ import { pop, SPRINGS } from "../animations";
 import { LAYOUT } from "../engine/layout";
 import { FONTS } from "../themes/fonts";
 import { fitFontSize, punchyTextShadow, rgba } from "../utils/style";
+import { GlitchText } from "./GlitchText";
 
 interface Props {
   title: string;
@@ -12,10 +13,11 @@ interface Props {
   chipColor: string;
   glowColor: string;
   delay?: number;
+  glitch?: boolean;
 }
 
 /** "УРОВЕНЬ 1" slam + difficulty chip + question line. */
-export const LevelHeader: React.FC<Props> = ({ title, question, chipLabel, chipColor, glowColor, delay = 0 }) => {
+export const LevelHeader: React.FC<Props> = ({ title, question, chipLabel, chipColor, glowColor, delay = 0, glitch = false }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const slam = pop(frame, fps, delay, SPRINGS.heavy);
@@ -36,20 +38,26 @@ export const LevelHeader: React.FC<Props> = ({ title, question, chipLabel, chipC
           opacity: Math.min(1, slam * 2),
         }}
       >
-        <div
-          style={{
-            fontFamily: FONTS.display,
-            fontWeight: 900,
-            fontSize: titleSize,
-            lineHeight: 1,
-            color: "#ffffff",
-            letterSpacing: -1,
-            textShadow: punchyTextShadow(glowColor, 9),
-            whiteSpace: "nowrap",
-          }}
-        >
-          {title}
-        </div>
+        {glitch ? (
+          <div style={{ textShadow: punchyTextShadow(glowColor, 9) }}>
+            <GlitchText text={title} fontFamily={FONTS.display} fontSize={titleSize} intensity={0.35} />
+          </div>
+        ) : (
+          <div
+            style={{
+              fontFamily: FONTS.display,
+              fontWeight: 900,
+              fontSize: titleSize,
+              lineHeight: 1,
+              color: "#ffffff",
+              letterSpacing: -1,
+              textShadow: punchyTextShadow(glowColor, 9),
+              whiteSpace: "nowrap",
+            }}
+          >
+            {title}
+          </div>
+        )}
       </div>
 
       <div

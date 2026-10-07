@@ -111,8 +111,8 @@ export const ClueCard: React.FC<Props> = ({ clue, index, size, appearAt, dimAt, 
       <div
         style={{
           position: "absolute",
-          top: -14,
-          left: -14,
+          ...(index < 2 ? { top: -14 } : { bottom: -14 }),
+          ...(index % 2 === 0 ? { left: -14 } : { right: -14 }),
           width: 74,
           height: 74,
           borderRadius: "50%",

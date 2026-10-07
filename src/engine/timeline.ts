@@ -44,6 +44,7 @@ export interface Timeline {
     level1Reveal: number;
     boss: number;
     bossIntro: number;
+    bossReveal: number;
     ending: number;
   };
 }
@@ -128,6 +129,7 @@ export function buildTimeline(episode: Episode, fps: number = VIDEO.fps): Timeli
       level1Reveal: level1.from + level1.revealStart + Math.round(fps * 0.6),
       bossIntro: boss.from + Math.round(boss.cluesStart * 0.55),
       boss: boss.from + boss.countdownStart + Math.round(fps * 1.4),
+      bossReveal: boss.from + boss.revealStart + Math.round(fps * 0.7),
       ending: cta.from + Math.round(cta.duration * 0.75),
     },
   };

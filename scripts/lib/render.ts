@@ -2,7 +2,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { bundle } from "@remotion/bundler";
-import { renderMedia, renderStill, selectComposition } from "@remotion/renderer";
+import { openBrowser, renderMedia, renderStill, selectComposition } from "@remotion/renderer";
 import { buildTimeline } from "../../src/engine/timeline";
 import type { QuizEpisodeProps } from "../../src/engine/types";
 import type { Episode } from "../../src/schema/episode";
@@ -85,15 +85,31 @@ export async function renderEpisodeScreenshots(serveUrl: string, episode: Episod
     ["level-1-reveal", keyFrames.level1Reveal],
     ["boss-intro", keyFrames.bossIntro],
     ["boss", keyFrames.boss],
+    ["boss-reveal", keyFrames.bossReveal],
     ["ending", keyFrames.ending],
   ];
 
   const files: string[] = [];
-  for (const [name, frame] of shots) {
-    const output = path.join(dir, `${name}.png`);
-    await renderStill({ serveUrl, composition, inputProps, frame, output, imageFormat: "png", overwrite: true });
-    files.push(output);
-    console.log(`  ✓ ${path.relative(process.cwd(), output)}  (frame ${frame})`);
+  let browser = await openBrowser("chrome");
+  try {
+    for (const [name, frame] of shots) {
+      const output = path.join(dir, `${name}.png`);
+      for (let attempt = 1; ; attempt++) {
+        try {
+          await renderStill({ serveUrl, composition, inputProps, frame, output, imageFormat: "png", overwrite: true, puppeteerInstance: browser });
+          break;
+        } catch (err) {
+          if (attempt >= 3) throw err;
+          console.warn(`  ! ${name}: browser crashed (${(err as Error).message.split("\n")[0]}), retrying...`);
+          await browser.close({ silent: true }).catch(() => undefined);
+          browser = await openBrowser("chrome");
+        }
+      }
+      files.push(output);
+      console.log(`  ✓ ${path.relative(process.cwd(), output)}  (frame ${frame})`);
+    }
+  } finally {
+    await browser.close({ silent: true }).catch(() => undefined);
   }
   return files;
 }

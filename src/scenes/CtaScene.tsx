@@ -2,6 +2,7 @@ import React from "react";
 import { interpolate, useCurrentFrame, useVideoConfig } from "remotion";
 import { pop, pulse, SPRINGS } from "../animations";
 import { Burst } from "../components/Burst";
+import { ProgressTrack } from "../components/ProgressTrack";
 import { SceneFrame } from "../components/SceneFrame";
 import type { Segment } from "../engine/timeline";
 import type { Episode } from "../schema/episode";
@@ -50,6 +51,7 @@ export const CtaScene: React.FC<Props> = ({ episode, theme, segment }) => {
           gap: 56,
         }}
       >
+        <ProgressTrack theme={theme} current={-1} completed={4} width={760} nodeSize={70} animateIn />
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 14 }}>
           <div
             style={{
