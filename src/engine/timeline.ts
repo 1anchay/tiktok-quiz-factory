@@ -7,7 +7,7 @@ export const VIDEO = {
 } as const;
 
 /** Frames between consecutive clue cards popping in. */
-export const CLUE_STAGGER = 6;
+export const CLUE_STAGGER = 10;
 
 export const DEFAULT_TIMING = {
   hook: 2.6,
