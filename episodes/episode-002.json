@@ -104,9 +104,9 @@
     ]
   },
   "music": {
-    "track": "music/neon-pulse.mp3",
-    "volume": 0.32,
-    "sfxVolume": 0.72
+    "track": "music/son-of-a-rocket.mp3",
+    "volume": 0.28,
+    "sfxVolume": 0.68
   },
   "cta": {
     "headline": "ЗНАЕШЬ BOSS? ПИШИ ОТВЕТ",
@@ -131,7 +131,7 @@
     "language": "ru",
     "goal": "publishable-image-first-episode",
     "asset_source": "official-steam-screenshots",
-    "music_source": "Pixabay Neon Pulse (30s)",
-    "revision": "real-assets-v1"
+    "music_source": "Son of a Rocket — Kevin MacLeod / Incompetech (CC BY 3.0)",
+    "revision": "real-assets-v2"
   }
 }
