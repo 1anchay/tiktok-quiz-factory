@@ -3,7 +3,9 @@
   "id": "episode-003",
   "series": "Сможешь пройти 5 уровней?",
   "hook": {
-    "bait": "ТЫ СЕЙЧАС ПОДУМАЛ НЕ ТО 👀",
+    "bait": "ОСТОРОЖНО 18+",
+    "baitImage": "images/hooks/episode-003-bait.jpg",
+    "baitReveal": "ДА ЛАДНО 😏\nЭТО ВСЕГО ЛИШЬ ВИКТОРИНА",
     "title": "УГАДАЙ 5 ИГР ПО 4 КАДРАМ",
     "subtitle": "5-Й УРОВЕНЬ ПОМНЯТ НЕ ВСЕ"
   },
@@ -14,40 +16,72 @@
       "answer": "HALF-LIFE 2",
       "difficulty": "easy",
       "clues": [
-        { "image": "images/half-life-2/clue-1.jpg" },
-        { "image": "images/half-life-2/clue-2.jpg" },
-        { "image": "images/half-life-2/clue-3.jpg" },
-        { "image": "images/half-life-2/clue-4.jpg" }
+        {
+          "image": "images/half-life-2/clue-1.jpg"
+        },
+        {
+          "image": "images/half-life-2/clue-2.jpg"
+        },
+        {
+          "image": "images/half-life-2/clue-3.jpg"
+        },
+        {
+          "image": "images/half-life-2/clue-4.jpg"
+        }
       ]
     },
     {
       "answer": "THE WITCHER 3",
       "difficulty": "medium",
       "clues": [
-        { "image": "images/witcher-3/clue-1.jpg" },
-        { "image": "images/witcher-3/clue-2.jpg" },
-        { "image": "images/witcher-3/clue-3.jpg" },
-        { "image": "images/witcher-3/clue-4.jpg" }
+        {
+          "image": "images/witcher-3/clue-1.jpg"
+        },
+        {
+          "image": "images/witcher-3/clue-2.jpg"
+        },
+        {
+          "image": "images/witcher-3/clue-3.jpg"
+        },
+        {
+          "image": "images/witcher-3/clue-4.jpg"
+        }
       ]
     },
     {
       "answer": "LITTLE NIGHTMARES",
       "difficulty": "hard",
       "clues": [
-        { "image": "images/little-nightmares/clue-1.jpg" },
-        { "image": "images/little-nightmares/clue-2.jpg" },
-        { "image": "images/little-nightmares/clue-3.jpg" },
-        { "image": "images/little-nightmares/clue-4.jpg" }
+        {
+          "image": "images/little-nightmares/clue-1.jpg"
+        },
+        {
+          "image": "images/little-nightmares/clue-2.jpg"
+        },
+        {
+          "image": "images/little-nightmares/clue-3.jpg"
+        },
+        {
+          "image": "images/little-nightmares/clue-4.jpg"
+        }
       ]
     },
     {
       "answer": "DEATH STRANDING",
       "difficulty": "expert",
       "clues": [
-        { "image": "images/death-stranding/clue-1.jpg" },
-        { "image": "images/death-stranding/clue-2.jpg" },
-        { "image": "images/death-stranding/clue-3.jpg" },
-        { "image": "images/death-stranding/clue-4.jpg" }
+        {
+          "image": "images/death-stranding/clue-1.jpg"
+        },
+        {
+          "image": "images/death-stranding/clue-2.jpg"
+        },
+        {
+          "image": "images/death-stranding/clue-3.jpg"
+        },
+        {
+          "image": "images/death-stranding/clue-4.jpg"
+        }
       ]
     }
   ],
@@ -58,15 +92,22 @@
     "revealAnswer": false,
     "commentPrompt": "ЗНАЕШЬ? ПИШИ ТОЛЬКО НАЗВАНИЕ",
     "clues": [
-      { "image": "images/stalker-2/clue-1.jpg" },
-      { "image": "images/stalker-2/clue-2.jpg" },
-      { "image": "images/stalker-2/clue-3.jpg" },
-      { "image": "images/stalker-2/clue-4.jpg" }
+      {
+        "image": "images/stalker-2/clue-1.jpg"
+      },
+      {
+        "image": "images/stalker-2/clue-2.jpg"
+      },
+      {
+        "image": "images/stalker-2/clue-3.jpg"
+      },
+      {
+        "image": "images/stalker-2/clue-4.jpg"
+      }
     ]
   },
   "music": {
-    "track": "music/digital-lemonade.mp3",
-    "volume": 0.24,
+    "volume": 0,
     "sfxVolume": 0.58
   },
   "cta": {
@@ -75,19 +116,27 @@
     "subscribe": "ПОДПИШИСЬ — В СЛЕДУЮЩЕМ ВЫПУСКЕ БУДЕТ СЛОЖНЕЕ"
   },
   "timing": {
-    "hook": 2.0,
+    "hook": 4.6,
     "levelIntro": 0.7,
     "reveal": 1.3,
-    "bossIntro": 1.0,
+    "bossIntro": 1,
     "bossOutro": 1.5,
     "cta": 2.8
   },
   "meta": {
-    "tags": ["games", "quiz", "guess-the-game", "real-screenshots"],
+    "tags": [
+      "games",
+      "quiz",
+      "guess-the-game",
+      "real-screenshots"
+    ],
     "language": "ru",
-    "hook_variant": "misdirection-v1",
+    "hook_variant": "18plus-fruit-misdirection-v2",
     "asset_source": "official-steam-screenshots",
-    "music_source": "Digital Lemonade — Kevin MacLeod / Incompetech (CC BY 4.0)",
-    "goal": "retention-hook-test"
+    "music_source": "TikTok official music library at publish time",
+    "goal": "retention-hook-test",
+    "tiktok_sound_target": "Sky — Playboi Carti",
+    "tiktok_sound_mix": "Add from TikTok official music library; added sound ~15-20%, original sound 100%; align a strong beat with 2.0s reveal",
+    "bait_image_source": "Wikimedia Commons: Peach close-up2.jpg by liz west, CC BY 2.0"
   }
 }
