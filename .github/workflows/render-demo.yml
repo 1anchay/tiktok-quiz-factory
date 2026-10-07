@@ -1,4 +1,4 @@
-name: Render Episode 002 with Real Game Assets
+name: Render Episode 003 with Stop-Scroll Hook
 
 on:
   workflow_dispatch:
@@ -34,19 +34,19 @@ jobs:
       - name: Install image tooling
         run: python -m pip install --disable-pip-version-check pillow
 
-      - name: Download official Steam screenshots and royalty-free music
-        run: python scripts/fetch-real-assets.py
+      - name: Download episode 003 Steam screenshots and music
+        run: python scripts/fetch-episode-003-assets.py
 
-      - name: Commit real assets
+      - name: Commit episode 003 real assets
         shell: bash
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add assets/images/portal-2 assets/images/subnautica assets/images/bioshock assets/images/resident-evil-7 assets/images/control assets/music/digital-lemonade.mp3
+          git add assets/images/half-life-2 assets/images/witcher-3 assets/images/little-nightmares assets/images/death-stranding assets/images/stalker-2 assets/music/digital-lemonade.mp3
           if git diff --cached --quiet; then
-            echo "Real assets already committed."
+            echo "Episode 003 assets already committed."
           else
-            git commit -m "Replace AI clues with official Steam screenshots"
+            git commit -m "Add real Steam screenshots for episode 003"
             git push origin HEAD:v0/factory-foundation
           fi
 
@@ -62,24 +62,24 @@ jobs:
       - name: Generate redesigned quiz SFX
         run: npm run assets:audio
 
-      - name: Validate episode 002
-        run: npm run validate -- episode-002
+      - name: Validate episode 003
+        run: npm run validate -- episode-003
 
       - name: Typecheck
         run: npm run typecheck
 
       - name: Render screenshots
-        run: npm run screenshot -- episode-002
+        run: npm run screenshot -- episode-003
 
       - name: Render MP4
-        run: npm run make -- episode-002 --force
+        run: npm run make -- episode-003 --force
 
       - name: Upload final render
         uses: actions/upload-artifact@v4
         with:
-          name: episode-002-audio-v3
+          name: episode-003-stop-scroll
           path: |
-            output/episode-002.mp4
-            output/screenshots/episode-002/*.png
+            output/episode-003.mp4
+            output/screenshots/episode-003/*.png
           if-no-files-found: error
           retention-days: 14
