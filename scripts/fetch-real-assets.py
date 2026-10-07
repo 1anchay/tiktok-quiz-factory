@@ -45,7 +45,7 @@ GAMES = [
 
 MUSIC_CATALOG = "https://incompetech.com/music/royalty-free/pieces.json"
 MUSIC_BASE = "https://incompetech.com/music/royalty-free/mp3-royaltyfree/"
-MUSIC_TITLE = "Son of a Rocket"
+MUSIC_TITLE = "Digital Lemonade"
 
 
 def fetch(url: str) -> bytes:
@@ -104,7 +104,7 @@ def download_music():
         raise RuntimeError(f"Track not found in Incompetech catalog: {MUSIC_TITLE}")
     filename = piece["filename"]
     url = MUSIC_BASE + urllib.parse.quote(filename)
-    out = ROOT / "assets" / "music" / "son-of-a-rocket.mp3"
+    out = ROOT / "assets" / "music" / "digital-lemonade.mp3"
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_bytes(fetch(url))
     print(f"saved {out.relative_to(ROOT)} <- {MUSIC_TITLE} / Kevin MacLeod / Incompetech")
