@@ -7,7 +7,7 @@ export const VIDEO = {
 } as const;
 
 /** Frames between consecutive clue cards popping in. */
-export const CLUE_STAGGER = 10;
+export const CLUE_STAGGER = 28;
 
 export const DEFAULT_TIMING = {
   hook: 2.6,
@@ -77,30 +77,32 @@ export function buildTimeline(episode: Episode, fps: number = VIDEO.fps): Timeli
 
   episode.levels.forEach((_, i) => {
     const intro = f(t.levelIntro);
-    const countdown = t.countdown * fps;
+    const cluesStart = Math.round(intro * 0.25);
+    const thinkPause = f(0.9);
+    const revealStart = cluesStart + CLUE_STAGGER * 3 + thinkPause;
     push({
       kind: "level",
       levelIndex: i,
-      duration: intro + countdown + f(t.reveal),
-      cluesStart: Math.round(intro * 0.25),
-      countdownStart: intro,
-      countdownSeconds: t.countdown,
-      revealStart: intro + countdown,
+      duration: revealStart + f(t.reveal),
+      cluesStart,
+      countdownStart: 0,
+      countdownSeconds: 0,
+      revealStart,
     });
   });
 
   {
     const intro = f(t.bossIntro);
-    const cluesPhase = f(1.0);
-    const countdown = t.countdown * fps;
+    const thinkPause = f(1.15);
+    const revealStart = intro + CLUE_STAGGER * 3 + thinkPause;
     push({
       kind: "boss",
       levelIndex: 4,
-      duration: intro + cluesPhase + countdown + f(t.bossOutro),
+      duration: revealStart + f(t.bossOutro),
       cluesStart: intro,
-      countdownStart: intro + cluesPhase,
-      countdownSeconds: t.countdown,
-      revealStart: intro + cluesPhase + countdown,
+      countdownStart: 0,
+      countdownSeconds: 0,
+      revealStart,
     });
   }
 
