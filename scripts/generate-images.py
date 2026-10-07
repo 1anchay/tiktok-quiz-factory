@@ -5,6 +5,7 @@ import json
 import os
 import time
 import urllib.error
+import urllib.parse
 import urllib.request
 from pathlib import Path
 
@@ -13,6 +14,7 @@ from PIL import Image
 ROOT = Path(__file__).resolve().parents[1]
 API = "https://vexa-ai.pages.dev/image"
 MODELS = ["seedream", "flux", "hd"]
+POLLINATIONS = "https://image.pollinations.ai/prompt"
 
 
 def request_json(url: str, payload: dict, timeout: int = 150) -> dict:
@@ -36,10 +38,21 @@ def download(url: str, timeout: int = 150) -> bytes:
         return res.read()
 
 
-def generate(prompt: str) -> tuple[bytes, str, str]:
+def valid_image(raw: bytes) -> bool:
+    try:
+        with Image.open(io.BytesIO(raw)) as im:
+            im.verify()
+        return True
+    except Exception:
+        return False
+
+
+def generate(prompt: str, seed: int) -> tuple[bytes, str, str]:
     errors = []
+
+    # Primary route: multi-provider proxy.
     for model in MODELS:
-        for attempt in range(1, 4):
+        for attempt in range(1, 3):
             try:
                 payload = {"prompt": prompt, "model": model}
                 if model == "hd":
@@ -48,11 +61,30 @@ def generate(prompt: str) -> tuple[bytes, str, str]:
                 if not data.get("success") or not data.get("proxy_url"):
                     raise RuntimeError(data.get("error") or "generation returned no image")
                 raw = download(data["proxy_url"])
+                if not valid_image(raw):
+                    raise RuntimeError("provider returned non-image content")
                 return raw, str(data.get("model", model)), str(data.get("source", "unknown"))
             except Exception as exc:
-                errors.append(f"{model} attempt {attempt}: {exc}")
-                time.sleep(2.5 * attempt)
-    raise RuntimeError("All image models failed:\n" + "\n".join(errors[-9:]))
+                errors.append(f"vexa/{model} attempt {attempt}: {exc}")
+                time.sleep(1.8 * attempt)
+
+    # Fallback route: direct Flux-compatible Pollinations endpoint.
+    encoded = urllib.parse.quote(prompt, safe="")
+    direct = (
+        f"{POLLINATIONS}/{encoded}"
+        f"?model=flux&width=1024&height=1024&seed={seed}&nologo=true"
+    )
+    for attempt in range(1, 4):
+        try:
+            raw = download(direct, timeout=180)
+            if not valid_image(raw):
+                raise RuntimeError("direct endpoint returned non-image content")
+            return raw, "flux", "image.pollinations.ai"
+        except Exception as exc:
+            errors.append(f"pollinations direct attempt {attempt}: {exc}")
+            time.sleep(2.5 * attempt)
+
+    raise RuntimeError("All image routes failed:\n" + "\n".join(errors[-12:]))
 
 
 def normalize_jpeg(raw: bytes, out: Path, size: int) -> None:
@@ -88,7 +120,7 @@ def main() -> None:
             continue
 
         print(f"[{index:02d}/{len(manifest['images'])}] generate {rel}")
-        raw, model, source = generate(item["prompt"])
+        raw, model, source = generate(item["prompt"], seed=20261007 + index * 97)
         normalize_jpeg(raw, out, size)
         print(f"  -> {out.relative_to(ROOT)} ({model}, {source})")
         records.append({"path": rel, "status": "generated", "model": model, "source": source, "prompt": item["prompt"]})
