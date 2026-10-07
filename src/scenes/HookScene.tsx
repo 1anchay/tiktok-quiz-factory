@@ -25,6 +25,9 @@ const DECOR = [
 export const HookScene: React.FC<Props> = ({ episode, theme, segment }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
+  const baitFrames = episode.hook.bait ? Math.min(Math.round(fps * 0.7), Math.max(12, segment.duration - Math.round(fps * 1.15))) : 0;
+  const showBait = Boolean(episode.hook.bait) && frame < baitFrames;
+  const mainFrame = Math.max(0, frame - baitFrames);
   const words = episode.hook.title.split(/\s+/);
   const issue = episode.id.match(/\d+/)?.[0];
 
@@ -33,8 +36,8 @@ export const HookScene: React.FC<Props> = ({ episode, theme, segment }) => {
     .filter((x): x is string => Boolean(x))
     .slice(0, 4);
 
-  const subEnter = pop(frame, fps, 6 + words.length * 4, SPRINGS.snappy);
-  const chipEnter = pop(frame, fps, 0, SPRINGS.snappy);
+  const subEnter = pop(mainFrame, fps, 4 + words.length * 3, SPRINGS.snappy);
+  const chipEnter = pop(mainFrame, fps, 0, SPRINGS.snappy);
 
   return (
     <SceneFrame duration={segment.duration}>
@@ -63,6 +66,37 @@ export const HookScene: React.FC<Props> = ({ episode, theme, segment }) => {
         );
       })}
 
+      {showBait && episode.hook.bait && (
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "0 80px",
+            background: "radial-gradient(circle at 50% 45%, rgba(255,255,255,0.12), rgba(0,0,0,0.18) 36%, rgba(0,0,0,0.72) 78%)",
+            zIndex: 20,
+          }}
+        >
+          <div
+            style={{
+              fontFamily: FONTS.display,
+              fontWeight: 900,
+              fontSize: fitFontSize(episode.hook.bait, { maxWidth: 900, maxSize: 132, minSize: 58, ratio: 1.06 }),
+              lineHeight: 1.02,
+              color: "#ffffff",
+              textAlign: "center",
+              textShadow: punchyTextShadow(theme.colors.accent, 11),
+              transform: `scale(${0.92 + pop(frame, fps, 0, SPRINGS.heavy) * 0.08}) rotate(-1deg)`,
+            }}
+          >
+            {episode.hook.bait}
+          </div>
+        </div>
+      )}
+
+      {!showBait && (
       <div
         style={{
           position: "absolute",
@@ -99,7 +133,7 @@ export const HookScene: React.FC<Props> = ({ episode, theme, segment }) => {
 
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6 }}>
           {words.map((word, i) => {
-            const enter = pop(frame, fps, 4 + i * 4, SPRINGS.heavy);
+            const enter = pop(mainFrame, fps, 2 + i * 3, SPRINGS.heavy);
             const hasDigit = /\d/.test(word);
             const size = hasDigit ? 210 : fitFontSize(word, { maxWidth: 860, maxSize: 138, minSize: 64, ratio: 1.08 });
             const wobble = hasDigit ? 1 + pulse(frame, 16) * 0.06 : 1;
@@ -145,10 +179,11 @@ export const HookScene: React.FC<Props> = ({ episode, theme, segment }) => {
           </div>
         )}
 
-        <div style={{ transform: `scale(${pop(frame, fps, 14, SPRINGS.soft)})` }}>
+        <div style={{ transform: `scale(${pop(mainFrame, fps, 10, SPRINGS.soft)})` }}>
           <ProgressTrack theme={theme} current={-1} completed={0} width={820} nodeSize={88} animateIn />
         </div>
       </div>
+      )}
     </SceneFrame>
   );
 };
