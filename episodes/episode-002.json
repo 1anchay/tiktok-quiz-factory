@@ -1,0 +1,91 @@
+{
+  "$schema": "./episode.schema.json",
+  "id": "episode-002",
+  "series": "Сможешь пройти 5 уровней?",
+  "hook": {
+    "title": "ЭТИ 5 ИГР ЗНАЮТ НЕ ВСЕ",
+    "subtitle": "ПОСЛЕДНЯЯ — ДЛЯ НАСТОЯЩИХ ГЕЙМЕРОВ"
+  },
+  "theme": "cyber-sunset",
+  "question": "УГАДАЙ ИГРУ",
+  "levels": [
+    {
+      "answer": "PORTAL 2",
+      "difficulty": "easy",
+      "clues": [
+        { "emoji": "🟠" },
+        { "emoji": "🔵" },
+        { "text": "КУБ-КОМПАНЬОН" },
+        { "text": "ЛАБОРАТОРИЯ" }
+      ]
+    },
+    {
+      "answer": "METRO EXODUS",
+      "difficulty": "medium",
+      "clues": [
+        { "emoji": "🚂" },
+        { "emoji": "☢️" },
+        { "text": "АВРОРА" },
+        { "text": "ПРОТИВОГАЗ" }
+      ]
+    },
+    {
+      "answer": "CYBERPUNK 2077",
+      "difficulty": "hard",
+      "clues": [
+        { "emoji": "🦾" },
+        { "text": "NIGHT CITY" },
+        { "text": "ЧИП В ГОЛОВЕ" },
+        { "text": "НЕОН" }
+      ]
+    },
+    {
+      "answer": "CONTROL",
+      "difficulty": "expert",
+      "clues": [
+        { "emoji": "📞" },
+        { "emoji": "🔻" },
+        { "text": "СТАРЕЙШИЙ ДОМ" },
+        { "text": "ЛЕВИТАЦИЯ" }
+      ]
+    }
+  ],
+  "boss": {
+    "answer": "BIOSHOCK",
+    "title": "BOSS",
+    "subtitle": "ФИНАЛЬНЫЙ УРОВЕНЬ",
+    "revealAnswer": false,
+    "commentPrompt": "ЗНАЕШЬ? ПИШИ ТОЛЬКО НАЗВАНИЕ",
+    "clues": [
+      { "text": "МАЯК" },
+      { "emoji": "💉" },
+      { "text": "ПОД ВОДОЙ" },
+      { "emoji": "🤿" }
+    ]
+  },
+  "music": {
+    "track": "music/arcade-drive.wav",
+    "bossTrack": "music/boss-rumble.wav",
+    "volume": 0.32,
+    "sfxVolume": 0.9
+  },
+  "cta": {
+    "headline": "УГАДАЛ BOSS? ПИШИ НАЗВАНИЕ",
+    "question": "СКОЛЬКО У ТЕБЯ ИЗ 5?",
+    "subscribe": "ПОДПИШИСЬ — СЛЕДУЮЩИЙ ВЫПУСК БУДЕТ ЕЩЁ СЛОЖНЕЕ"
+  },
+  "timing": {
+    "hook": 1.4,
+    "levelIntro": 1.4,
+    "countdown": 2,
+    "reveal": 0.8,
+    "bossIntro": 0.9,
+    "bossOutro": 0.9,
+    "cta": 3
+  },
+  "meta": {
+    "tags": ["games", "quiz", "mixed-clues", "harder-games"],
+    "language": "ru",
+    "goal": "content-variety-test"
+  }
+}
