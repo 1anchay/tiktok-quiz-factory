@@ -45,7 +45,7 @@ export const AudioLayer: React.FC<Props> = ({ episode, timeline }) => {
             src={staticFile(music.bossTrack)}
             loop
             volume={(f) =>
-              music.volume * 1.15 * interpolate(f, [0, 4, bossDuration - 12, bossDuration], [0, 1, 1, 0], clamp)
+              music.volume * interpolate(f, [0, 4, bossDuration - 12, bossDuration], [0, 1, 1, 0], clamp)
             }
           />
         </Sequence>
