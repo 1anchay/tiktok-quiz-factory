@@ -41,11 +41,6 @@ export function buildSfxCues(timeline: Timeline, hookWordCount: number): SfxCue[
     const cluesStart = isBoss ? seg.cluesStart + 2 : seg.cluesStart;
     for (let i = 0; i < 4; i++) add("pop", seg.from + cluesStart + i * stagger, isBoss ? 0.9 : 0.75);
 
-    for (let s = 0; s < seg.countdownSeconds; s++) {
-      const last = s === seg.countdownSeconds - 1;
-      add(last ? "tickFinal" : "tick", seg.from + seg.countdownStart + s * fps, last ? 0.9 : 0.8);
-    }
-
     if (isBoss) {
       add("bossImpact", seg.from + seg.revealStart, 0.75);
       add("glitch", seg.from + seg.revealStart + 2, 0.6);
