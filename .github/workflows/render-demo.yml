@@ -34,7 +34,7 @@ jobs:
       - name: Install image tooling
         run: python -m pip install --disable-pip-version-check pillow
 
-      - name: Download official Steam screenshots and Pixabay music
+      - name: Download official Steam screenshots and royalty-free music
         run: python scripts/fetch-real-assets.py
 
       - name: Commit real assets
@@ -42,7 +42,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add assets/images/portal-2 assets/images/subnautica assets/images/bioshock assets/images/resident-evil-7 assets/images/control assets/music/neon-pulse.mp3
+          git add assets/images/portal-2 assets/images/subnautica assets/images/bioshock assets/images/resident-evil-7 assets/images/control assets/music/son-of-a-rocket.mp3
           if git diff --cached --quiet; then
             echo "Real assets already committed."
           else
@@ -74,7 +74,7 @@ jobs:
       - name: Upload final render
         uses: actions/upload-artifact@v4
         with:
-          name: episode-002-real-assets
+          name: episode-002-real-assets-v2
           path: |
             output/episode-002.mp4
             output/screenshots/episode-002/*.png
