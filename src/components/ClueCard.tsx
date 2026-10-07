@@ -3,7 +3,7 @@ import { Img, interpolate, staticFile, useCurrentFrame, useVideoConfig } from "r
 import { clamp, pop } from "../animations";
 import type { Clue } from "../schema/episode";
 import { FONTS } from "../themes/fonts";
-import { rgba } from "../utils/style";
+import { fitFontSize, rgba } from "../utils/style";
 
 interface Props {
   clue: Clue;
@@ -58,7 +58,7 @@ export const ClueCard: React.FC<Props> = ({ clue, index, size, appearAt, dimAt, 
       >
         {clue.image ? (
           <Img src={staticFile(clue.image)} style={{ width: "100%", height: "100%", objectFit: "cover", transform: "scale(1.08)" }} />
-        ) : (
+        ) : clue.emoji ? (
           <div
             style={{
               width: "100%",
@@ -71,6 +71,29 @@ export const ClueCard: React.FC<Props> = ({ clue, index, size, appearAt, dimAt, 
             }}
           >
             {clue.emoji}
+          </div>
+        ) : (
+          <div
+            style={{
+              width: "100%",
+              height: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: 36,
+              textAlign: "center",
+              fontFamily: FONTS.display,
+              fontWeight: 900,
+              lineHeight: 1.05,
+              textTransform: "uppercase",
+              letterSpacing: -1.5,
+              fontSize: fitFontSize(clue.text ?? "", { maxWidth: size - 72, maxSize: 74, minSize: 34, maxLines: 3 }),
+              color: "#fff",
+              textShadow: `0 5px 0 rgba(0,0,0,0.45), 0 0 28px ${rgba(glowColor, 0.65)}`,
+              background: `radial-gradient(circle at 50% 40%, ${rgba(glowColor, 0.34)}, transparent 68%), linear-gradient(145deg, #0b0f24, #11172f)`,
+            }}
+          >
+            {clue.text}
           </div>
         )}
         {/* Glass highlight */}
