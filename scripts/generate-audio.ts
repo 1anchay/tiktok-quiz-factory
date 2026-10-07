@@ -79,6 +79,7 @@ interface TrackSpec {
   progression: number[][]; // chords as MIDI notes, one per bar
   seed: number;
   dark?: boolean;
+  soft?: boolean;
 }
 
 function renderTrack(spec: TrackSpec, sr: number): Buffer32 {
@@ -117,7 +118,7 @@ function renderTrack(spec: TrackSpec, sr: number): Buffer32 {
       const kt = tInBeat;
       const freq = 45 + 120 * Math.exp(-kt * 28);
       const phase = (45 * kt + (120 / 28) * (1 - Math.exp(-kt * 28))) * TAU;
-      s += Math.sin(phase) * Math.exp(-kt * (spec.dark ? 6 : 8)) * 0.95;
+      s += Math.sin(phase) * Math.exp(-kt * (spec.dark ? 6 : 8)) * (spec.soft ? 0.52 : 0.95);
       if (kt < 0.004) s += 0.25 * (1 - kt / 0.004) * (freq > 0 ? 1 : 0);
     }
 
@@ -126,8 +127,8 @@ function renderTrack(spec: TrackSpec, sr: number): Buffer32 {
       const st = tInBeat;
       const noise = rng() * 2 - 1;
       const f = snareFilter(noise, 2200, sr, 0.9);
-      s += (f.band * 0.9 + noise * 0.15) * Math.exp(-st * 18) * 0.55;
-      s += Math.sin(TAU * 190 * st) * Math.exp(-st * 30) * 0.25;
+      s += (f.band * 0.9 + noise * 0.15) * Math.exp(-st * 18) * (spec.soft ? 0.3 : 0.55);
+      s += Math.sin(TAU * 190 * st) * Math.exp(-st * 30) * (spec.soft ? 0.12 : 0.25);
     }
 
     // Hats on off-beat 8ths, ghost 16ths.
@@ -135,7 +136,7 @@ function renderTrack(spec: TrackSpec, sr: number): Buffer32 {
       const isOff = idx16 % 2 === 1;
       const noise = rng() * 2 - 1;
       const f = hatFilter(noise, 9000, sr, 0.6);
-      const amp = isOff ? 0.22 : 0.07;
+      const amp = isOff ? (spec.soft ? 0.11 : 0.22) : spec.soft ? 0.035 : 0.07;
       s += f.high * Math.exp(-tIn16 * (isOff ? 55 : 90)) * amp;
     }
 
@@ -148,7 +149,7 @@ function renderTrack(spec: TrackSpec, sr: number): Buffer32 {
       const env = Math.exp(-eighthT * 6) * 0.8 + 0.2;
       const raw = saw(bassPhase) * 0.7 + square(bassPhase * 0.5) * 0.3;
       const f = bassFilter(raw, 380 + 900 * Math.exp(-eighthT * 10), sr, 1.1);
-      let b = f.low * env * 0.55 * sidechain;
+      let b = f.low * env * (spec.soft ? 0.36 : 0.55) * sidechain;
       if (spec.dark) b = Math.tanh(b * 2.2) * 0.45;
       s += b;
     }
@@ -165,7 +166,7 @@ function renderTrack(spec: TrackSpec, sr: number): Buffer32 {
         }
       });
       const f = padFilter(pad / 6, spec.dark ? 700 : 1500, sr, 0.7);
-      s += f.low * 0.22 * sidechain;
+      s += f.low * (spec.soft ? 0.3 : 0.22) * sidechain;
     }
 
     // Arp: 16th notes up the chord, square wave pluck.
@@ -176,7 +177,7 @@ function renderTrack(spec: TrackSpec, sr: number): Buffer32 {
       const env = Math.exp(-tIn16 * (spec.dark ? 14 : 22));
       const raw = spec.dark ? square(arpPhase, 0.3) : square(arpPhase, 0.25) * 0.6 + tri(arpPhase) * 0.4;
       const f = arpFilter(raw, 1800 + 2400 * env, sr, 0.9);
-      s += f.low * env * (spec.dark ? 0.14 : 0.17);
+      s += f.low * env * (spec.dark ? 0.14 : spec.soft ? 0.1 : 0.17);
     }
 
     // Boss: low drone + periodic tom hits.
@@ -314,6 +315,26 @@ function main() {
           [53, 57, 60], // F
           [48, 52, 55], // C
           [55, 59, 62], // G
+        ],
+      },
+      musicSr,
+    ),
+    musicSr,
+  );
+
+  writeWav(
+    path.join(ASSETS_DIR, "music", "shorts-chill.wav"),
+    renderTrack(
+      {
+        bpm: 108,
+        seconds: 48,
+        seed: 21,
+        soft: true,
+        progression: [
+          [57, 60, 64],
+          [55, 59, 62],
+          [53, 57, 60],
+          [48, 52, 55],
         ],
       },
       musicSr,
