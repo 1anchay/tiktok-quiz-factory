@@ -77,7 +77,7 @@ jobs:
       - name: Upload final render
         uses: actions/upload-artifact@v4
         with:
-          name: episode-003-18plus-hook-v2
+          name: episode-003-color-hook-music-v3
           path: |
             output/episode-003.mp4
             output/screenshots/episode-003/*.png
