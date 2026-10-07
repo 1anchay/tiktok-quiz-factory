@@ -106,8 +106,8 @@
   "music": {
     "track": "music/shorts-chill.wav",
     "bossTrack": "music/boss-rumble.wav",
-    "volume": 0.16,
-    "sfxVolume": 0.78
+    "volume": 0.24,
+    "sfxVolume": 0.8
   },
   "cta": {
     "headline": "ЗНАЕШЬ BOSS? ПИШИ ТОЛЬКО НАЗВАНИЕ",
