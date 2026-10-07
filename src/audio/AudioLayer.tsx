@@ -22,7 +22,10 @@ export const AudioLayer: React.FC<Props> = ({ episode, timeline }) => {
   const cta = timeline.segments.find((s) => s.kind === "cta")!;
   const total = timeline.durationInFrames;
   const hasBossTrack = Boolean(music.bossTrack);
-  const cues = useMemo(() => buildSfxCues(timeline, episode.hook.title.split(/\s+/).length), [timeline, episode.hook.title]);
+  const cues = useMemo(
+    () => buildSfxCues(timeline, episode.hook.title.split(/\s+/).length, Boolean(episode.hook.bait)),
+    [timeline, episode.hook.title, episode.hook.bait],
+  );
 
   const mainVolume = (f: number) => {
     const fadeIn = interpolate(f, [0, 10], [0, 1], clamp);
