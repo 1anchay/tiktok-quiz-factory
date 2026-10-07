@@ -1,0 +1,81 @@
+{
+  "$schema": "./episode.schema.json",
+  "id": "episode-001",
+  "series": "Сможешь пройти 5 уровней?",
+  "hook": {
+    "title": "СМОЖЕШЬ ПРОЙТИ 5 УРОВНЕЙ?",
+    "subtitle": "УГАДАЙ ИГРУ ПО 4 ПРЕДМЕТАМ"
+  },
+  "theme": "neon-arcade",
+  "question": "УГАДАЙ ИГРУ",
+  "levels": [
+    {
+      "answer": "MINECRAFT",
+      "difficulty": "easy",
+      "clues": [
+        { "image": "images/minecraft/pickaxe.jpg" },
+        { "image": "images/minecraft/tnt.jpg" },
+        { "image": "images/minecraft/grass-block.jpg" },
+        { "image": "images/minecraft/crafting-table.jpg" }
+      ]
+    },
+    {
+      "answer": "ANGRY BIRDS",
+      "difficulty": "medium",
+      "clues": [
+        { "image": "images/angry-birds/slingshot.jpg" },
+        { "image": "images/angry-birds/eggs.jpg" },
+        { "image": "images/angry-birds/tower.jpg" },
+        { "image": "images/angry-birds/feather.jpg" }
+      ]
+    },
+    {
+      "answer": "AMONG US",
+      "difficulty": "hard",
+      "clues": [
+        { "image": "images/among-us/button.jpg" },
+        { "image": "images/among-us/vent.jpg" },
+        { "image": "images/among-us/spaceship.jpg" },
+        { "image": "images/among-us/task-list.jpg" }
+      ]
+    },
+    {
+      "answer": "GTA V",
+      "difficulty": "expert",
+      "clues": [
+        { "image": "images/gta/sports-car.jpg" },
+        { "image": "images/gta/money.jpg" },
+        { "image": "images/gta/wanted-stars.jpg" },
+        { "image": "images/gta/palm-city.jpg" }
+      ]
+    }
+  ],
+  "boss": {
+    "answer": "DARK SOULS",
+    "title": "BOSS",
+    "subtitle": "ФИНАЛЬНЫЙ УРОВЕНЬ",
+    "revealAnswer": false,
+    "commentPrompt": "ПИШИ ОТВЕТ В КОММЕНТАХ",
+    "clues": [
+      { "image": "images/dark-souls/bonfire.jpg" },
+      { "image": "images/dark-souls/flask.jpg" },
+      { "image": "images/dark-souls/helmet.jpg" },
+      { "image": "images/dark-souls/shield.jpg" }
+    ]
+  },
+  "music": {
+    "track": "music/arcade-drive.wav",
+    "bossTrack": "music/boss-rumble.wav",
+    "volume": 0.4,
+    "sfxVolume": 0.85
+  },
+  "cta": {
+    "headline": "ЗНАЕШЬ BOSS? ПИШИ ОТВЕТ",
+    "question": "СКОЛЬКО У ТЕБЯ ИЗ 5?",
+    "subscribe": "ПОДПИШИСЬ — ПРОДОЛЖЕНИЕ В СЛЕДУЮЩЕМ ВЫПУСКЕ"
+  },
+  "meta": {
+    "tags": ["games", "quiz", "guess-the-game"],
+    "language": "ru"
+  }
+}

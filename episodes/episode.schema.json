@@ -1,0 +1,285 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$"
+    },
+    "series": {
+      "type": "string",
+      "minLength": 1
+    },
+    "format": {
+      "default": "five-levels",
+      "type": "string",
+      "const": "five-levels"
+    },
+    "hook": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 60
+        },
+        "subtitle": {
+          "type": "string",
+          "maxLength": 60
+        }
+      },
+      "required": [
+        "title"
+      ]
+    },
+    "theme": {
+      "default": "neon-arcade",
+      "type": "string"
+    },
+    "question": {
+      "default": "УГАДАЙ ИГРУ",
+      "type": "string",
+      "maxLength": 60
+    },
+    "levels": {
+      "minItems": 4,
+      "maxItems": 4,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "answer": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          },
+          "clues": {
+            "minItems": 4,
+            "maxItems": 4,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "image": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "emoji": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 8
+                },
+                "label": {
+                  "type": "string",
+                  "maxLength": 24
+                }
+              }
+            }
+          },
+          "difficulty": {
+            "default": "medium",
+            "type": "string",
+            "enum": [
+              "easy",
+              "medium",
+              "hard",
+              "expert",
+              "boss"
+            ]
+          },
+          "question": {
+            "type": "string",
+            "maxLength": 60
+          }
+        },
+        "required": [
+          "answer",
+          "clues"
+        ]
+      }
+    },
+    "boss": {
+      "type": "object",
+      "properties": {
+        "answer": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        "clues": {
+          "minItems": 4,
+          "maxItems": 4,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "image": {
+                "type": "string",
+                "minLength": 1
+              },
+              "emoji": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 8
+              },
+              "label": {
+                "type": "string",
+                "maxLength": 24
+              }
+            }
+          }
+        },
+        "difficulty": {
+          "default": "boss",
+          "type": "string",
+          "enum": [
+            "easy",
+            "medium",
+            "hard",
+            "expert",
+            "boss"
+          ]
+        },
+        "question": {
+          "type": "string",
+          "maxLength": 60
+        },
+        "title": {
+          "default": "BOSS",
+          "type": "string",
+          "maxLength": 20
+        },
+        "subtitle": {
+          "default": "ФИНАЛЬНЫЙ УРОВЕНЬ",
+          "type": "string",
+          "maxLength": 40
+        },
+        "revealAnswer": {
+          "default": false,
+          "type": "boolean"
+        },
+        "commentPrompt": {
+          "default": "ПИШИ ОТВЕТ В КОММЕНТАХ",
+          "type": "string",
+          "maxLength": 48
+        }
+      },
+      "required": [
+        "answer",
+        "clues"
+      ]
+    },
+    "music": {
+      "default": {
+        "volume": 0.45,
+        "sfxVolume": 0.8
+      },
+      "type": "object",
+      "properties": {
+        "track": {
+          "type": "string",
+          "minLength": 1
+        },
+        "bossTrack": {
+          "type": "string",
+          "minLength": 1
+        },
+        "volume": {
+          "default": 0.45,
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "sfxVolume": {
+          "default": 0.8,
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "cta": {
+      "default": {
+        "headline": "ЗНАЕШЬ BOSS? ПИШИ ОТВЕТ",
+        "question": "СКОЛЬКО У ТЕБЯ ИЗ 5?",
+        "subscribe": "ПОДПИШИСЬ — ПРОДОЛЖЕНИЕ В СЛЕДУЮЩЕМ ВЫПУСКЕ"
+      },
+      "type": "object",
+      "properties": {
+        "headline": {
+          "default": "ЗНАЕШЬ BOSS? ПИШИ ОТВЕТ",
+          "type": "string",
+          "maxLength": 40
+        },
+        "question": {
+          "default": "СКОЛЬКО У ТЕБЯ ИЗ 5?",
+          "type": "string",
+          "maxLength": 40
+        },
+        "subscribe": {
+          "default": "ПОДПИШИСЬ — ПРОДОЛЖЕНИЕ В СЛЕДУЮЩЕМ ВЫПУСКЕ",
+          "type": "string",
+          "maxLength": 60
+        }
+      }
+    },
+    "timing": {
+      "default": {},
+      "type": "object",
+      "properties": {
+        "hook": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 6
+        },
+        "levelIntro": {
+          "type": "number",
+          "minimum": 0.5,
+          "maximum": 3
+        },
+        "countdown": {
+          "type": "integer",
+          "minimum": 2,
+          "maximum": 5
+        },
+        "reveal": {
+          "type": "number",
+          "minimum": 0.5,
+          "maximum": 3
+        },
+        "bossIntro": {
+          "type": "number",
+          "minimum": 0.5,
+          "maximum": 3
+        },
+        "bossOutro": {
+          "type": "number",
+          "minimum": 0.5,
+          "maximum": 3
+        },
+        "cta": {
+          "type": "number",
+          "minimum": 2,
+          "maximum": 6
+        }
+      }
+    },
+    "meta": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string"
+      },
+      "additionalProperties": {}
+    }
+  },
+  "required": [
+    "id",
+    "series",
+    "hook",
+    "levels",
+    "boss"
+  ]
+}
