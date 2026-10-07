@@ -5,7 +5,7 @@ import urllib.parse
 import urllib.request
 from pathlib import Path
 
-from PIL import Image, ImageEnhance
+from PIL import Image, ImageEnhance, ImageFilter
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -17,9 +17,7 @@ GAMES = [
     {"app_id": 1643320, "folder": "stalker-2", "indices": [0, 2, 4, 6]},
 ]
 
-MUSIC_CATALOG = "https://incompetech.com/music/royalty-free/pieces.json"
-MUSIC_BASE = "https://incompetech.com/music/royalty-free/mp3-royaltyfree/"
-MUSIC_TITLE = "Digital Lemonade"
+HOOK_IMAGE_URL = "https://commons.wikimedia.org/wiki/Special:Redirect/file/Peach%20close-up2.jpg"
 
 
 def fetch(url: str) -> bytes:
@@ -68,24 +66,33 @@ def download_game_assets():
             print(f"saved {out.relative_to(ROOT)} <- Steam screenshot #{index + 1}")
 
 
-def download_music():
-    out = ROOT / "assets" / "music" / "digital-lemonade.mp3"
-    if out.exists() and out.stat().st_size > 100000:
-        print(f"music already present: {out.relative_to(ROOT)}")
-        return
+def download_hook_image():
+    raw = fetch(HOOK_IMAGE_URL)
+    out = ROOT / "assets" / "images" / "hooks" / "episode-003-bait.jpg"
+    with Image.open(io.BytesIO(raw)) as im:
+        im = im.convert("RGB")
+        w, h = im.size
+        target_ratio = 1080 / 1920
+        current_ratio = w / h
 
-    catalog = json.loads(fetch(MUSIC_CATALOG).decode("utf-8"))
-    pieces = catalog if isinstance(catalog, list) else catalog.get("pieces", [])
-    piece = next((p for p in pieces if p.get("title") == MUSIC_TITLE), None)
-    if not piece:
-        raise RuntimeError(f"Track not found in Incompetech catalog: {MUSIC_TITLE}")
-    filename = piece["filename"]
-    url = MUSIC_BASE + urllib.parse.quote(filename)
-    out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_bytes(fetch(url))
-    print(f"saved {out.relative_to(ROOT)} <- {MUSIC_TITLE}")
+        if current_ratio > target_ratio:
+            crop_w = int(h * target_ratio)
+            left = max(0, (w - crop_w) // 2)
+            im = im.crop((left, 0, left + crop_w, h))
+        else:
+            crop_h = int(w / target_ratio)
+            top = max(0, (h - crop_h) // 2)
+            im = im.crop((0, top, w, top + crop_h))
+
+        im = im.resize((1080, 1920), Image.Resampling.LANCZOS)
+        im = im.filter(ImageFilter.GaussianBlur(radius=34))
+        im = ImageEnhance.Color(im).enhance(1.18)
+        im = ImageEnhance.Contrast(im).enhance(1.06)
+        out.parent.mkdir(parents=True, exist_ok=True)
+        im.save(out, "JPEG", quality=88, optimize=True, progressive=True)
+    print(f"saved {out.relative_to(ROOT)} <- Wikimedia Commons peach photo, blurred derivative")
 
 
 if __name__ == "__main__":
     download_game_assets()
-    download_music()
+    download_hook_image()
