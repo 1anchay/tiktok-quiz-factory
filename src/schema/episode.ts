@@ -68,6 +68,7 @@ export const EpisodeSchema = z.object({
   series: z.string().min(1),
   format: z.literal("five-levels").default("five-levels"),
   hook: z.object({
+    bait: z.string().max(48).optional(),
     title: z.string().min(1).max(60),
     subtitle: z.string().max(60).optional(),
   }),
