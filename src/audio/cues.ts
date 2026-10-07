@@ -10,15 +10,20 @@ export interface SfxCue {
 }
 
 /** Derives every sound effect from the timeline, so new formats get audio "for free". */
-export function buildSfxCues(timeline: Timeline, hookWordCount: number): SfxCue[] {
+export function buildSfxCues(timeline: Timeline, hookWordCount: number, hasHookBait = false): SfxCue[] {
   const cues: SfxCue[] = [];
   const { fps } = timeline;
   const add = (sound: SoundName, frame: number, volume = 1) => cues.push({ sound, frame: Math.max(0, Math.round(frame)), volume });
 
   for (const seg of timeline.segments) {
     if (seg.kind === "hook") {
-      add("whoosh", seg.from, 0.45);
-      if (hookWordCount > 0) add("pop", seg.from + 8, 0.35);
+      add("whoosh", seg.from, hasHookBait ? 0.3 : 0.45);
+      if (hasHookBait) {
+        add("bossImpact", seg.from + 2, 0.22);
+        add("whoosh", seg.from + Math.round(fps * 0.68), 0.5);
+      } else if (hookWordCount > 0) {
+        add("pop", seg.from + 8, 0.35);
+      }
       continue;
     }
 
