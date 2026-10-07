@@ -14,10 +14,11 @@ export const ClueSchema = z
   .object({
     image: assetPath.optional(),
     emoji: z.string().min(1).max(8).optional(),
+    text: z.string().min(1).max(64).optional(),
     label: z.string().max(24).optional(),
   })
-  .refine((c) => Boolean(c.image || c.emoji), {
-    message: "Each clue needs either `image` or `emoji`",
+  .refine((c) => Boolean(c.image || c.emoji || c.text), {
+    message: "Each clue needs `image`, `emoji` or `text`",
   });
 
 export const LevelSchema = z.object({
