@@ -3,6 +3,8 @@
 Automated factory for vertical (9:16) gaming-quiz TikTok videos, built with **Remotion + React + TypeScript**.
 A new video is created by adding a JSON file to `episodes/` — no React code changes needed.
 
+**Current publishing direction:** image-first clues, roughly one clue per second, a short thinking pause after clue #4, then the answer. Text baked into clue cards is avoided for publishable episodes.
+
 First format: **«Сможешь пройти 5 уровней?»** — `HOOK → LEVEL 1–4 → BOSS → CTA`,
 content type «Угадай игру по четырём предметам».
 
@@ -19,6 +21,7 @@ Requires **Node.js 20+**. FFmpeg and Chrome Headless Shell are bundled/downloade
 
 ```bash
 npm install
+npm run assets:audio                # generates the original royalty-free music/SFX
 npm run typecheck
 npm run make -- episode-001        # → output/episode-001.mp4
 npm run screenshot -- episode-001  # → output/screenshots/episode-001/*.png
