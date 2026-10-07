@@ -17,35 +17,33 @@ export function buildSfxCues(timeline: Timeline, hookWordCount: number): SfxCue[
 
   for (const seg of timeline.segments) {
     if (seg.kind === "hook") {
-      add("whoosh", seg.from, 0.7);
-      for (let i = 0; i < hookWordCount; i++) add("pop", seg.from + 4 + i * 4, 0.8);
+      add("whoosh", seg.from, 0.45);
+      if (hookWordCount > 0) add("pop", seg.from + 8, 0.35);
       continue;
     }
 
     if (seg.kind === "cta") {
-      add("whoosh", seg.from - 4, 0.8);
-      add("ctaChime", seg.from + 8, 0.8);
+      add("whoosh", seg.from - 4, 0.45);
+      add("ctaChime", seg.from + 8, 0.5);
       continue;
     }
 
     const isBoss = seg.kind === "boss";
     if (isBoss) {
-      add("riser", seg.from - Math.round(fps * 1.25), 0.65);
-      add("bossImpact", seg.from, 1);
-      add("glitch", seg.from + 3, 0.7);
+      add("riser", seg.from - Math.round(fps * 0.85), 0.35);
+      add("bossImpact", seg.from, 0.55);
     } else {
-      add("whoosh", seg.from - 4, 0.75);
+      add("whoosh", seg.from - 4, 0.4);
     }
 
     const stagger = isBoss ? CLUE_STAGGER - 1 : CLUE_STAGGER;
     const cluesStart = isBoss ? seg.cluesStart + 2 : seg.cluesStart;
-    for (let i = 0; i < 4; i++) add("pop", seg.from + cluesStart + i * stagger, isBoss ? 0.9 : 0.75);
+    for (let i = 0; i < 4; i++) add("pop", seg.from + cluesStart + i * stagger, isBoss ? 0.5 : 0.42);
 
     if (isBoss) {
-      add("bossImpact", seg.from + seg.revealStart, 0.75);
-      add("glitch", seg.from + seg.revealStart + 2, 0.6);
+      add("bossImpact", seg.from + seg.revealStart, 0.45);
     } else {
-      add("reveal", seg.from + seg.revealStart, 0.85);
+      add("reveal", seg.from + seg.revealStart, 0.6);
     }
   }
 
