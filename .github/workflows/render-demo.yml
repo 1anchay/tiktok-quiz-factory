@@ -12,10 +12,46 @@ permissions:
   contents: write
 
 jobs:
-  render:
+  generate:
+    name: Generate clue ${{ matrix.index }}
     runs-on: ubuntu-24.04
-    timeout-minutes: 60
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        index: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
 
+    steps:
+      - name: Checkout foundation branch
+        uses: actions/checkout@v4
+        with:
+          ref: v0/factory-foundation
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install image tooling
+        run: python -m pip install --disable-pip-version-check pillow
+
+      - name: Generate one AI clue
+        run: python scripts/generate-images.py --index ${{ matrix.index }} --artifact-dir generated
+
+      - name: Upload clue
+        uses: actions/upload-artifact@v4
+        with:
+          name: clue-${{ matrix.index }}
+          path: generated/
+          if-no-files-found: error
+          retention-days: 2
+
+  assemble:
+    name: Assemble and render episode
+    needs: generate
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
     env:
       RENDER_CONCURRENCY: "1"
 
@@ -26,38 +62,52 @@ jobs:
           ref: v0/factory-foundation
           fetch-depth: 0
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Download generated clues
+        uses: actions/download-artifact@v4
         with:
-          node-version: "24"
-          cache: "npm"
+          pattern: clue-*
+          path: generated
+          merge-multiple: true
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
+      - name: Copy generated clues into assets
+        shell: bash
+        run: |
+          test -d generated/assets
+          cp -R generated/assets/. assets/
 
-      - name: Install Node dependencies
-        run: npm ci
-
-      - name: Install image tooling
-        run: python -m pip install --disable-pip-version-check pillow
-
-      - name: Generate AI clue images
-        run: python scripts/generate-images.py
+      - name: Verify all 20 clue files exist
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          manifest=json.loads(Path("content/episode-002-image-prompts.json").read_text())
+          missing=[x["path"] for x in manifest["images"] if not (Path("assets")/x["path"]).exists()]
+          if missing:
+              raise SystemExit("Missing generated images:\n" + "\n".join(missing))
+          print("All 20 AI clue images are present.")
+          PY
 
       - name: Commit generated clue images
         shell: bash
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add assets/images/portal-2 assets/images/subnautica assets/images/bioshock assets/images/resident-evil-7 assets/images/control assets/images/episode-002-generation.json
+          git add assets/images/portal-2 assets/images/subnautica assets/images/bioshock assets/images/resident-evil-7 assets/images/control
           if git diff --cached --quiet; then
-            echo "No new generated images to commit."
+            echo "Generated images already committed."
           else
             git commit -m "Generate AI clue images for episode 002"
             git push origin HEAD:v0/factory-foundation
           fi
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: "npm"
+
+      - name: Install Node dependencies
+        run: npm ci
 
       - name: Generate original royalty-free audio
         run: npm run assets:audio
@@ -74,7 +124,7 @@ jobs:
       - name: Render MP4
         run: npm run make -- episode-002 --force
 
-      - name: Upload render
+      - name: Upload final render
         uses: actions/upload-artifact@v4
         with:
           name: episode-002-image-first
