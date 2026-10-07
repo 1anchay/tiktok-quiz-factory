@@ -42,7 +42,7 @@ GAMES = [
     },
 ]
 
-PIXABAY_PAGE = "https://pixabay.com/music/synthwave-neon-pulse-30s-307999/"
+MUSIC_URL = "https://incompetech.com/music/royalty-free/mp3-royaltyfree/Son%20of%20a%20Rocket.mp3"
 
 
 def fetch(url: str) -> bytes:
@@ -94,17 +94,10 @@ def download_game_assets():
 
 
 def download_music():
-    html = fetch(PIXABAY_PAGE).decode("utf-8", errors="ignore")
-    candidates = re.findall(r'https:\\/\\/cdn\.pixabay\.com\\/download\\/audio\\/[^"\\]+?\.mp3[^"\\]*', html)
-    if not candidates:
-        candidates = re.findall(r'https://cdn\.pixabay\.com/download/audio/[^"\']+?\.mp3[^"\']*', html)
-    if not candidates:
-        raise RuntimeError("Could not locate Pixabay MP3 URL on track page")
-    url = candidates[0].replace("\\/", "/")
-    out = ROOT / "assets" / "music" / "neon-pulse.mp3"
+    out = ROOT / "assets" / "music" / "son-of-a-rocket.mp3"
     out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_bytes(fetch(url))
-    print(f"saved {out.relative_to(ROOT)} <- Pixabay Neon Pulse")
+    out.write_bytes(fetch(MUSIC_URL))
+    print(f"saved {out.relative_to(ROOT)} <- Kevin MacLeod / Incompetech")
 
 
 if __name__ == "__main__":
