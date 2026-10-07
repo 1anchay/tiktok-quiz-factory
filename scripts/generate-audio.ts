@@ -212,19 +212,19 @@ function buildSfx(sr: number) {
 
   const whoosh = (() => {
     const f = svf();
-    const dur = 0.5;
+    const dur = 0.32;
     return sfx(dur, sr, (t) => {
       const p = t / dur;
-      const env = Math.sin(Math.PI * Math.pow(p, 0.7)) ** 2;
-      const cutoff = 400 + 5000 * Math.sin(Math.PI * p);
-      return f(noise(), cutoff, sr, 1.4).band * env;
+      const env = Math.sin(Math.PI * p) ** 2;
+      const cutoff = 700 + 3200 * Math.sin(Math.PI * p);
+      return f(noise(), cutoff, sr, 1.2).band * env * 0.58;
     });
   })();
 
-  const pop = sfx(0.2, sr, (t) => {
-    const hz = 300 + 900 * Math.exp(-t * 40);
-    const phase = TAU * (300 * t + (900 / 40) * (1 - Math.exp(-t * 40)));
-    return Math.sin(phase) * Math.exp(-t * 22) + (t < 0.003 ? noise() * 0.3 : 0) + 0 * hz;
+  const pop = sfx(0.16, sr, (t) => {
+    const body = Math.sin(TAU * 620 * t) * Math.exp(-t * 34) * 0.72;
+    const air = Math.sin(TAU * 1240 * t) * Math.exp(-t * 48) * 0.22;
+    return body + air;
   });
 
   const tick = sfx(0.14, sr, (t) =>
@@ -237,42 +237,40 @@ function buildSfx(sr: number) {
   );
 
   const reveal = (() => {
-    const notes = [72, 76, 79, 84, 88];
-    return sfx(1.2, sr, (t) => {
+    const notes = [76, 79, 83];
+    return sfx(0.72, sr, (t) => {
       let s = 0;
       notes.forEach((note, k) => {
-        const start = k * 0.055;
+        const start = k * 0.07;
         if (t < start) return;
         const lt = t - start;
         const hz = noteHz(note);
-        s += (tri(hz * lt) * 0.6 + Math.sin(TAU * hz * 2 * lt) * 0.25) * Math.exp(-lt * 4.5) * 0.5;
+        s += Math.sin(TAU * hz * lt) * Math.exp(-lt * 7.5) * 0.52;
+        s += Math.sin(TAU * hz * 2 * lt) * Math.exp(-lt * 11) * 0.12;
       });
-      s += noise() * 0.05 * Math.exp(-t * 6) * (Math.sin(TAU * 30 * t) > 0 ? 1 : 0.3);
       return s;
     });
   })();
 
   const bossImpact = (() => {
     const f = svf();
-    return sfx(2.0, sr, (t) => {
-      const sub = Math.sin(TAU * (28 * t + (60 / 3) * (1 - Math.exp(-t * 3)))) * Math.exp(-t * 1.6);
-      const crack = f(noise(), 900 + 3000 * Math.exp(-t * 8), sr, 0.8).low * Math.exp(-t * 5) * 0.9;
-      const dist = Math.tanh((sub + crack) * 3) * 0.8;
-      const rumble = noise() * 0.06 * Math.exp(-t * 1.2);
-      return dist + rumble;
+    return sfx(0.9, sr, (t) => {
+      const sub = Math.sin(TAU * (44 - 12 * t) * t) * Math.exp(-t * 4.2) * 0.62;
+      const body = f(noise(), 680, sr, 0.9).low * Math.exp(-t * 7) * 0.26;
+      return sub + body;
     });
   })();
 
   const riser = (() => {
     const f = svf();
     let phase = 0;
-    const dur = 1.3;
+    const dur = 0.85;
     return sfx(dur, sr, (t) => {
       const p = t / dur;
-      phase += (180 + 1400 * p * p) / sr;
-      const tone = saw(phase) * 0.25;
-      const n = f(noise(), 600 + 7000 * p * p, sr, 2).band * 0.8;
-      return (tone + n) * Math.pow(p, 1.6) * (p > 0.96 ? (1 - p) / 0.04 : 1);
+      phase += (260 + 720 * p * p) / sr;
+      const tone = Math.sin(TAU * phase) * 0.18;
+      const n = f(noise(), 900 + 3600 * p, sr, 1.4).band * 0.28;
+      return (tone + n) * Math.pow(p, 1.8) * (p > 0.9 ? (1 - p) / 0.1 : 1);
     });
   })();
 
@@ -284,15 +282,10 @@ function buildSfx(sr: number) {
     });
   })();
 
-  const ctaChime = sfx(1.4, sr, (t) => {
-    const a = t;
-    const b = t - 0.14;
+  const ctaChime = sfx(0.9, sr, (t) => {
     const bell = (lt: number, hz: number) =>
-      lt < 0
-        ? 0
-        : (Math.sin(TAU * hz * lt) + Math.sin(TAU * hz * 2.76 * lt) * 0.3 + Math.sin(TAU * hz * 5.4 * lt) * 0.1) *
-          Math.exp(-lt * 3.2);
-    return bell(a, noteHz(79)) * 0.5 + bell(b, noteHz(84)) * 0.55;
+      lt < 0 ? 0 : Math.sin(TAU * hz * lt) * Math.exp(-lt * 6.5);
+    return bell(t, noteHz(79)) * 0.38 + bell(t - 0.11, noteHz(83)) * 0.34;
   });
 
   return { whoosh, pop, tick, tickFinal, reveal, bossImpact, riser, glitch, ctaChime };
