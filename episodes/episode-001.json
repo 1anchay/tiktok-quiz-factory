@@ -3,8 +3,8 @@
   "id": "episode-001",
   "series": "Сможешь пройти 5 уровней?",
   "hook": {
-    "title": "СМОЖЕШЬ ПРОЙТИ 5 УРОВНЕЙ?",
-    "subtitle": "УГАДАЙ ИГРУ ПО 4 ПРЕДМЕТАМ"
+    "title": "УГАДАЙ 5 ИГР ПО 4 ПРЕДМЕТАМ",
+    "subtitle": "5-Й УРОВЕНЬ ЗНАЮТ НЕ ВСЕ"
   },
   "theme": "neon-arcade",
   "question": "УГАДАЙ ИГРУ",
@@ -55,7 +55,7 @@
     "title": "BOSS",
     "subtitle": "ФИНАЛЬНЫЙ УРОВЕНЬ",
     "revealAnswer": false,
-    "commentPrompt": "ПИШИ ОТВЕТ В КОММЕНТАХ",
+    "commentPrompt": "НЕ ПОДСКАЗЫВАЙ — ПИШИ ТОЛЬКО НАЗВАНИЕ",
     "clues": [
       { "image": "images/dark-souls/bonfire.jpg" },
       { "image": "images/dark-souls/flask.jpg" },
@@ -66,16 +66,26 @@
   "music": {
     "track": "music/arcade-drive.wav",
     "bossTrack": "music/boss-rumble.wav",
-    "volume": 0.4,
-    "sfxVolume": 0.85
+    "volume": 0.32,
+    "sfxVolume": 0.9
   },
   "cta": {
-    "headline": "ЗНАЕШЬ BOSS? ПИШИ ОТВЕТ",
+    "headline": "ЗНАЕШЬ BOSS? ПИШИ ТОЛЬКО НАЗВАНИЕ",
     "question": "СКОЛЬКО У ТЕБЯ ИЗ 5?",
-    "subscribe": "ПОДПИШИСЬ — ПРОДОЛЖЕНИЕ В СЛЕДУЮЩЕМ ВЫПУСКЕ"
+    "subscribe": "ПОДПИШИСЬ — В СЛЕДУЮЩЕМ ВЫПУСКЕ НОВЫЙ BOSS"
+  },
+  "timing": {
+    "hook": 1.3,
+    "levelIntro": 0.7,
+    "countdown": 2,
+    "reveal": 0.8,
+    "bossIntro": 0.8,
+    "bossOutro": 0.8,
+    "cta": 3
   },
   "meta": {
     "tags": ["games", "quiz", "guess-the-game"],
-    "language": "ru"
+    "language": "ru",
+    "goal": "first-publishable-tiktok-test"
   }
 }
