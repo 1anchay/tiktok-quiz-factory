@@ -1,4 +1,4 @@
-name: Generate and Render TikTok Episode 002
+name: Render Episode 002 with Real Game Assets
 
 on:
   workflow_dispatch:
@@ -12,46 +12,10 @@ permissions:
   contents: write
 
 jobs:
-  generate:
-    name: Generate clue ${{ matrix.index }}
-    runs-on: ubuntu-24.04
-    timeout-minutes: 15
-    strategy:
-      fail-fast: false
-      max-parallel: 20
-      matrix:
-        index: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
-
-    steps:
-      - name: Checkout foundation branch
-        uses: actions/checkout@v4
-        with:
-          ref: v0/factory-foundation
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Install image tooling
-        run: python -m pip install --disable-pip-version-check pillow
-
-      - name: Generate one AI clue
-        run: python scripts/generate-images.py --index ${{ matrix.index }} --artifact-dir generated
-
-      - name: Upload clue
-        uses: actions/upload-artifact@v4
-        with:
-          name: clue-${{ matrix.index }}
-          path: generated/
-          if-no-files-found: error
-          retention-days: 2
-
-  assemble:
-    name: Assemble and render episode
-    needs: generate
+  render:
     runs-on: ubuntu-24.04
     timeout-minutes: 40
+
     env:
       RENDER_CONCURRENCY: "1"
 
@@ -62,41 +26,27 @@ jobs:
           ref: v0/factory-foundation
           fetch-depth: 0
 
-      - name: Download generated clues
-        uses: actions/download-artifact@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
-          pattern: clue-*
-          path: generated
-          merge-multiple: true
+          python-version: "3.12"
 
-      - name: Copy generated clues into assets
-        shell: bash
-        run: |
-          test -d generated/assets
-          cp -R generated/assets/. assets/
+      - name: Install image tooling
+        run: python -m pip install --disable-pip-version-check pillow
 
-      - name: Verify all 20 clue files exist
-        run: |
-          python - <<'PY'
-          import json
-          from pathlib import Path
-          manifest=json.loads(Path("content/episode-002-image-prompts.json").read_text())
-          missing=[x["path"] for x in manifest["images"] if not (Path("assets")/x["path"]).exists()]
-          if missing:
-              raise SystemExit("Missing generated images:\n" + "\n".join(missing))
-          print("All 20 AI clue images are present.")
-          PY
+      - name: Download official Steam screenshots and Pixabay music
+        run: python scripts/fetch-real-assets.py
 
-      - name: Commit generated clue images
+      - name: Commit real assets
         shell: bash
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add assets/images/portal-2 assets/images/subnautica assets/images/bioshock assets/images/resident-evil-7 assets/images/control
+          git add assets/images/portal-2 assets/images/subnautica assets/images/bioshock assets/images/resident-evil-7 assets/images/control assets/music/neon-pulse.mp3
           if git diff --cached --quiet; then
-            echo "Generated images already committed."
+            echo "Real assets already committed."
           else
-            git commit -m "Generate AI clue images for episode 002"
+            git commit -m "Replace AI clues with official Steam screenshots"
             git push origin HEAD:v0/factory-foundation
           fi
 
@@ -108,9 +58,6 @@ jobs:
 
       - name: Install Node dependencies
         run: npm ci
-
-      - name: Generate original royalty-free audio
-        run: npm run assets:audio
 
       - name: Validate episode 002
         run: npm run validate -- episode-002
@@ -127,7 +74,7 @@ jobs:
       - name: Upload final render
         uses: actions/upload-artifact@v4
         with:
-          name: episode-002-image-first
+          name: episode-002-real-assets
           path: |
             output/episode-002.mp4
             output/screenshots/episode-002/*.png
