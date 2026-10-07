@@ -1,0 +1,90 @@
+{
+  "$schema": "./episode.schema.json",
+  "id": "episode-002",
+  "series": "Сможешь пройти 5 уровней?",
+  "hook": {
+    "title": "УГАДАЙ 5 ИГР ПО 4 ПОДСКАЗКАМ",
+    "subtitle": "ПОСЛЕДНЯЯ — ДЛЯ НАСТОЯЩИХ ГЕЙМЕРОВ"
+  },
+  "theme": "neon-arcade",
+  "question": "УГАДАЙ ИГРУ",
+  "levels": [
+    {
+      "answer": "PORTAL 2",
+      "difficulty": "easy",
+      "clues": [
+        { "image": "images/portal-2/portal-gun.jpg" },
+        { "image": "images/portal-2/companion-cube.jpg" },
+        { "image": "images/portal-2/test-chamber.jpg" },
+        { "image": "images/portal-2/turret.jpg" }
+      ]
+    },
+    {
+      "answer": "SUBNAUTICA",
+      "difficulty": "medium",
+      "clues": [
+        { "image": "images/subnautica/seamoth.jpg" },
+        { "image": "images/subnautica/oxygen-tank.jpg" },
+        { "image": "images/subnautica/glowing-coral.jpg" },
+        { "image": "images/subnautica/deep-creature.jpg" }
+      ]
+    },
+    {
+      "answer": "BIOSHOCK",
+      "difficulty": "hard",
+      "clues": [
+        { "image": "images/bioshock/lighthouse.jpg" },
+        { "image": "images/bioshock/diving-helmet.jpg" },
+        { "image": "images/bioshock/plasmid-hand.jpg" },
+        { "image": "images/bioshock/rapture-corridor.jpg" }
+      ]
+    },
+    {
+      "answer": "RESIDENT EVIL 7",
+      "difficulty": "expert",
+      "clues": [
+        { "image": "images/resident-evil-7/cassette-recorder.jpg" },
+        { "image": "images/resident-evil-7/mold-corridor.jpg" },
+        { "image": "images/resident-evil-7/first-aid-bottle.jpg" },
+        { "image": "images/resident-evil-7/old-kitchen.jpg" }
+      ]
+    }
+  ],
+  "boss": {
+    "answer": "CONTROL",
+    "title": "BOSS",
+    "subtitle": "ФИНАЛЬНЫЙ УРОВЕНЬ",
+    "revealAnswer": false,
+    "commentPrompt": "ЗНАЕШЬ? ПИШИ ТОЛЬКО НАЗВАНИЕ",
+    "clues": [
+      { "image": "images/control/red-phone.jpg" },
+      { "image": "images/control/brutalist-corridor.jpg" },
+      { "image": "images/control/levitating-chair.jpg" },
+      { "image": "images/control/black-pyramid.jpg" }
+    ]
+  },
+  "music": {
+    "track": "music/shorts-chill.wav",
+    "bossTrack": "music/boss-rumble.wav",
+    "volume": 0.24,
+    "sfxVolume": 0.8
+  },
+  "cta": {
+    "headline": "ЗНАЕШЬ BOSS? ПИШИ ОТВЕТ",
+    "question": "СКОЛЬКО У ТЕБЯ ИЗ 5?",
+    "subscribe": "ПОДПИШИСЬ — В СЛЕДУЮЩЕМ ВЫПУСКЕ НОВЫЙ BOSS"
+  },
+  "timing": {
+    "hook": 1.4,
+    "levelIntro": 0.7,
+    "reveal": 1.3,
+    "bossIntro": 1.0,
+    "bossOutro": 1.5,
+    "cta": 2.8
+  },
+  "meta": {
+    "tags": ["games", "quiz", "guess-the-game", "image-only"],
+    "language": "ru",
+    "goal": "publishable-image-first-episode"
+  }
+}
