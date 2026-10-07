@@ -1,0 +1,49 @@
+name: Render TikTok Demo
+
+on:
+  workflow_dispatch:
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    env:
+      RENDER_CONCURRENCY: "1"
+
+    steps:
+      - name: Checkout foundation branch
+        uses: actions/checkout@v4
+        with:
+          ref: v0/factory-foundation
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate episode
+        run: npm run validate -- episode-001
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Render screenshots
+        run: npm run screenshot -- episode-001
+
+      - name: Render MP4
+        run: npm run make -- episode-001 --force
+
+      - name: Upload render artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: episode-001-render
+          path: |
+            output/episode-001.mp4
+            output/screenshots/episode-001/*.png
+          if-no-files-found: error
+          retention-days: 14
