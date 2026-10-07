@@ -20,7 +20,9 @@ export function buildSfxCues(timeline: Timeline, hookWordCount: number, hasHookB
       add("whoosh", seg.from, hasHookBait ? 0.3 : 0.45);
       if (hasHookBait) {
         add("bossImpact", seg.from + 2, 0.22);
-        add("whoosh", seg.from + Math.round(fps * 0.68), 0.5);
+        add("whoosh", seg.from + Math.round(fps * 1.95), 0.52);
+        add("reveal", seg.from + Math.round(fps * 2.05), 0.28);
+        add("whoosh", seg.from + Math.round(fps * 2.95), 0.42);
       } else if (hookWordCount > 0) {
         add("pop", seg.from + 8, 0.35);
       }
