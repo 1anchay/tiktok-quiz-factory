@@ -4,11 +4,11 @@
   "series": "Мемы Рунета",
   "hook": {
     "bait": "ОСТОРОЖНО 18+",
-    "baitImage": "images/hooks/episode-004-bait.jpg",
+    "baitImage": "images/hooks/episode-004-approved.webp",
     "baitReveal": "ДА НЕТ 😏\nЭТО ВСЕГО ЛИШЬ ВИКТОРИНА",
     "baitDuration": 3,
     "baitRevealDuration": 2,
-    "baitBlur": 4,
+    "baitBlur": 0,
     "title": "СЕЙЧАС БУДУТ МЕМЫ РУНЕТА",
     "subtitle": "УГАДАЙ МЕМ ПО 4 КАДРАМ"
   },
@@ -16,20 +16,22 @@
   "question": "УГАДАЙ МЕМ РУНЕТА",
   "levels": [
     {
-      "answer": "МИЛЛИОН ДВЕСТИ НА БАЛАНСЕ",
+      "answer": "ТОЛИК-ЕБОЛИК, ПЕРВЫЙ ДЕНЬ НА РАБОТЕ",
       "difficulty": "easy",
+      "revealAudio": "audio/memes/tolik-ebolik.mp3",
+      "revealAudioVolume": 1,
       "clues": [
         {
-          "image": "images/memes/million-dvesti/clue-1.jpg"
+          "image": "images/memes/tolik-ebolik/clue-1.jpg"
         },
         {
-          "image": "images/memes/million-dvesti/clue-2.jpg"
+          "image": "images/memes/tolik-ebolik/clue-2.jpg"
         },
         {
-          "image": "images/memes/million-dvesti/clue-3.jpg"
+          "image": "images/memes/tolik-ebolik/clue-3.jpg"
         },
         {
-          "image": "images/memes/million-dvesti/clue-4.jpg"
+          "image": "images/memes/tolik-ebolik/clue-4.jpg"
         }
       ]
     },
@@ -49,7 +51,9 @@
         {
           "image": "images/memes/lev-rychit/clue-4.jpg"
         }
-      ]
+      ],
+      "revealAudio": "audio/memes/lev-rychit.mp3",
+      "revealAudioVolume": 1
     },
     {
       "answer": "ПОВАР СПРАШИВАЕТ ПОВАРА",
@@ -116,9 +120,9 @@
     "revealAudioVolume": 1
   },
   "music": {
-    "track": "music/digital-lemonade.mp3",
-    "volume": 0.16,
-    "sfxVolume": 0.5
+    "track": "music/monkeys-spinning-monkeys.mp3",
+    "volume": 0.2,
+    "sfxVolume": 0.48
   },
   "cta": {
     "headline": "УЗНАЛ ФИНАЛЬНЫЙ МЕМ?",
@@ -142,9 +146,10 @@
     ],
     "language": "ru",
     "hook_variant": "user-supplied-18plus-silhouette",
-    "asset_source": "source-video-frames",
+    "asset_source": "Public source thumbnails; first meme from Tolik-ebolik original; approved user hook image",
     "audio_source": "source-video-clips",
     "goal": "runet-meme-quiz",
-    "audio_status": "Original reveal clips enabled for Povar, Tolik and Russkie-domoy; Mellstroy and Lev use clean reveal SFX because no reliable direct original audio source was found"
+    "audio_status": "First two meme voice/audio clips required. Tracks 3-5 retained.",
+    "music_source": "Monkeys Spinning Monkeys — Kevin MacLeod, CC BY 4.0"
   }
 }
