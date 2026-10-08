@@ -53,7 +53,7 @@ export const CtaSchema = z.object({
 
 /** All values in seconds. Every field is optional and falls back to engine defaults. */
 export const TimingSchema = z.object({
-  hook: z.number().min(1).max(6).optional(),
+  hook: z.number().min(1).max(12).optional(),
   levelIntro: z.number().min(0.5).max(3).optional(),
   countdown: z.number().int().min(2).max(5).optional(),
   reveal: z.number().min(0.5).max(3).optional(),
