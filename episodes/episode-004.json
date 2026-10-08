@@ -18,37 +18,55 @@
     {
       "answer": "МИЛЛИОН ДВЕСТИ НА БАЛАНСЕ",
       "difficulty": "easy",
-      "revealAudio": "audio/memes/million-dvesti.mp3",
-      "revealAudioVolume": 1,
       "clues": [
-        { "image": "images/memes/million-dvesti/clue-1.jpg" },
-        { "image": "images/memes/million-dvesti/clue-2.jpg" },
-        { "image": "images/memes/million-dvesti/clue-3.jpg" },
-        { "image": "images/memes/million-dvesti/clue-4.jpg" }
+        {
+          "image": "images/memes/million-dvesti/clue-1.jpg"
+        },
+        {
+          "image": "images/memes/million-dvesti/clue-2.jpg"
+        },
+        {
+          "image": "images/memes/million-dvesti/clue-3.jpg"
+        },
+        {
+          "image": "images/memes/million-dvesti/clue-4.jpg"
+        }
       ]
     },
     {
       "answer": "ЯК ЛЕВ РЫЧИТ",
       "difficulty": "medium",
-      "revealAudio": "audio/memes/lev-rychit.mp3",
-      "revealAudioVolume": 1,
       "clues": [
-        { "image": "images/memes/lev-rychit/clue-1.jpg" },
-        { "image": "images/memes/lev-rychit/clue-2.jpg" },
-        { "image": "images/memes/lev-rychit/clue-3.jpg" },
-        { "image": "images/memes/lev-rychit/clue-4.jpg" }
+        {
+          "image": "images/memes/lev-rychit/clue-1.jpg"
+        },
+        {
+          "image": "images/memes/lev-rychit/clue-2.jpg"
+        },
+        {
+          "image": "images/memes/lev-rychit/clue-3.jpg"
+        },
+        {
+          "image": "images/memes/lev-rychit/clue-4.jpg"
+        }
       ]
     },
     {
       "answer": "ПОВАР СПРАШИВАЕТ ПОВАРА",
       "difficulty": "hard",
-      "revealAudio": "audio/memes/povar.mp3",
-      "revealAudioVolume": 1,
       "clues": [
-        { "image": "images/memes/povar/clue-1.jpg" },
-        { "image": "images/memes/povar/clue-2.jpg" },
-        { "image": "images/memes/povar/clue-3.jpg" },
-        { "image": "images/memes/povar/clue-4.jpg" }
+        {
+          "image": "images/memes/povar/clue-1.jpg"
+        },
+        {
+          "image": "images/memes/povar/clue-2.jpg"
+        },
+        {
+          "image": "images/memes/povar/clue-3.jpg"
+        },
+        {
+          "image": "images/memes/povar/clue-4.jpg"
+        }
       ]
     },
     {
@@ -57,10 +75,18 @@
       "revealAudio": "audio/memes/tolik.mp3",
       "revealAudioVolume": 1,
       "clues": [
-        { "image": "images/memes/tolik/clue-1.jpg" },
-        { "image": "images/memes/tolik/clue-2.jpg" },
-        { "image": "images/memes/tolik/clue-3.jpg" },
-        { "image": "images/memes/tolik/clue-4.jpg" }
+        {
+          "image": "images/memes/tolik/clue-1.jpg"
+        },
+        {
+          "image": "images/memes/tolik/clue-2.jpg"
+        },
+        {
+          "image": "images/memes/tolik/clue-3.jpg"
+        },
+        {
+          "image": "images/memes/tolik/clue-4.jpg"
+        }
       ]
     }
   ],
@@ -70,13 +96,19 @@
     "subtitle": "ФИНАЛЬНЫЙ МЕМ",
     "revealAnswer": false,
     "commentPrompt": "УЗНАЛ? ПИШИ НАЗВАНИЕ МЕМА",
-    "revealAudio": "audio/memes/russkie-domoy.mp3",
-    "revealAudioVolume": 1,
     "clues": [
-      { "image": "images/memes/russkie-domoy/clue-1.jpg" },
-      { "image": "images/memes/russkie-domoy/clue-2.jpg" },
-      { "image": "images/memes/russkie-domoy/clue-3.jpg" },
-      { "image": "images/memes/russkie-domoy/clue-4.jpg" }
+      {
+        "image": "images/memes/russkie-domoy/clue-1.jpg"
+      },
+      {
+        "image": "images/memes/russkie-domoy/clue-2.jpg"
+      },
+      {
+        "image": "images/memes/russkie-domoy/clue-3.jpg"
+      },
+      {
+        "image": "images/memes/russkie-domoy/clue-4.jpg"
+      }
     ]
   },
   "music": {
@@ -98,11 +130,17 @@
     "cta": 2.8
   },
   "meta": {
-    "tags": ["memes", "runet", "quiz", "russian-memes"],
+    "tags": [
+      "memes",
+      "runet",
+      "quiz",
+      "russian-memes"
+    ],
     "language": "ru",
     "hook_variant": "user-supplied-18plus-silhouette",
     "asset_source": "source-video-frames",
     "audio_source": "source-video-clips",
-    "goal": "runet-meme-quiz"
+    "goal": "runet-meme-quiz",
+    "audio_status": "Tolik direct MP3 enabled; Povar and Russkie-domoy auto-discovery attempted during asset preparation"
   }
 }
