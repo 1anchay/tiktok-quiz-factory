@@ -7,9 +7,10 @@ import sys
 import tempfile
 from pathlib import Path
 
-from PIL import Image, ImageEnhance
+from PIL import Image, ImageEnhance, ImageFile
 
 ROOT = Path(__file__).resolve().parents[1]
+ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 SOURCES = [
     {
