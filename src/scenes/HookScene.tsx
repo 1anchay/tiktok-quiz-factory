@@ -33,8 +33,8 @@ export const HookScene: React.FC<Props> = ({ episode, theme, segment }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  const baitFrames = episode.hook.bait ? Math.round(fps * 2.0) : 0;
-  const revealFrames = episode.hook.baitReveal ? Math.round(fps * 1.0) : 0;
+  const baitFrames = episode.hook.bait ? Math.round(fps * (episode.hook.baitDuration ?? 2.0)) : 0;
+  const revealFrames = episode.hook.baitReveal ? Math.round(fps * (episode.hook.baitRevealDuration ?? 1.0)) : 0;
 
   const showBait = Boolean(episode.hook.bait) && frame < baitFrames;
   const showReveal =
@@ -120,7 +120,7 @@ export const HookScene: React.FC<Props> = ({ episode, theme, segment }) => {
                 height: 2100,
                 objectFit: "cover",
                 transform: `scale(${baitZoom})`,
-                filter: "blur(38px) brightness(0.68) saturate(1.5) contrast(1.08)",
+                filter: `blur(${episode.hook.baitBlur ?? 38}px) brightness(0.68) saturate(1.5) contrast(1.08)`,
               }}
             />
           )}
