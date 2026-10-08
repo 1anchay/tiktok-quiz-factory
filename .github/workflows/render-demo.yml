@@ -1,4 +1,4 @@
-name: Render Episode 003 with Stop-Scroll Hook
+name: Render Episode 004 Runet Memes
 
 on:
   workflow_dispatch:
@@ -14,7 +14,7 @@ permissions:
 jobs:
   render:
     runs-on: ubuntu-24.04
-    timeout-minutes: 40
+    timeout-minutes: 45
 
     env:
       RENDER_CONCURRENCY: "1"
@@ -31,22 +31,25 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install image tooling
-        run: python -m pip install --disable-pip-version-check pillow
+      - name: Install media tooling
+        run: |
+          python -m pip install --disable-pip-version-check pillow yt-dlp
+          ffmpeg -version
+          ffprobe -version
 
-      - name: Download episode 003 Steam screenshots and music
-        run: python scripts/fetch-episode-003-assets.py
+      - name: Prepare Runet meme frames and audio
+        run: python scripts/fetch-episode-004-assets.py
 
-      - name: Commit episode 003 real assets
+      - name: Commit episode 004 assets
         shell: bash
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add assets/images/half-life-2 assets/images/witcher-3 assets/images/little-nightmares assets/images/death-stranding assets/images/stalker-2 assets/images/hooks/episode-003-bait.jpg
+          git add assets/images/hooks/episode-004-bait.jpg assets/images/memes assets/audio/memes
           if git diff --cached --quiet; then
-            echo "Episode 003 assets already committed."
+            echo "Episode 004 media already committed."
           else
-            git commit -m "Add real Steam screenshots for episode 003"
+            git commit -m "Add Runet meme frames and reveal audio"
             git push origin HEAD:v0/factory-foundation
           fi
 
@@ -59,27 +62,27 @@ jobs:
       - name: Install Node dependencies
         run: npm ci
 
-      - name: Generate redesigned quiz SFX
+      - name: Generate quiz SFX
         run: npm run assets:audio
 
-      - name: Validate episode 003
-        run: npm run validate -- episode-003
+      - name: Validate episode 004
+        run: npm run validate -- episode-004
 
       - name: Typecheck
         run: npm run typecheck
 
       - name: Render screenshots
-        run: npm run screenshot -- episode-003
+        run: npm run screenshot -- episode-004
 
       - name: Render MP4
-        run: npm run make -- episode-003 --force
+        run: npm run make -- episode-004 --force
 
       - name: Upload final render
         uses: actions/upload-artifact@v4
         with:
-          name: episode-003-color-hook-music-v3
+          name: episode-004-runet-memes
           path: |
-            output/episode-003.mp4
-            output/screenshots/episode-003/*.png
+            output/episode-004.mp4
+            output/screenshots/episode-004/*.png
           if-no-files-found: error
           retention-days: 14
