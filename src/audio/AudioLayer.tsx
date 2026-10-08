@@ -45,7 +45,7 @@ export const AudioLayer: React.FC<Props> = ({ episode, timeline }) => {
       ? interpolate(f, [boss.from - 8, boss.from, cta.from, cta.from + 10], [1, 0, 0, 1], clamp)
       : 1;
     const revealDuck = revealAudioEvents.reduce((duck, event) => {
-      const end = event.from + Math.round(timeline.fps * 2.5);
+      const end = event.from + Math.round(timeline.fps * 2.9);
       const localDuck = interpolate(
         f,
         [event.from - 5, event.from + 2, end - 5, end],
@@ -79,7 +79,7 @@ export const AudioLayer: React.FC<Props> = ({ episode, timeline }) => {
         <Sequence
           key={`reveal-audio-${i}`}
           from={event.from}
-          durationInFrames={Math.round(timeline.fps * 2.6)}
+          durationInFrames={Math.round(timeline.fps * 3.0)}
           name="Meme reveal audio"
         >
           <Audio src={staticFile(event.path)} volume={event.volume} />
