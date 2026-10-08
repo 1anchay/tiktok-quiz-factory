@@ -22,10 +22,12 @@ export const ClueSchema = z
   });
 
 export const LevelSchema = z.object({
-  answer: z.string().min(1).max(40),
+  answer: z.string().min(1).max(64),
   clues: z.array(ClueSchema).length(4, "Each level needs exactly 4 clues"),
   difficulty: DifficultySchema.default("medium"),
   question: z.string().max(60).optional(),
+  revealAudio: assetPath.optional(),
+  revealAudioVolume: z.number().min(0).max(1.5).default(1),
 });
 
 export const BossSchema = LevelSchema.extend({
@@ -71,6 +73,9 @@ export const EpisodeSchema = z.object({
     bait: z.string().max(48).optional(),
     baitImage: assetPath.optional(),
     baitReveal: z.string().max(72).optional(),
+    baitDuration: z.number().min(0.5).max(5).optional(),
+    baitRevealDuration: z.number().min(0.5).max(4).optional(),
+    baitBlur: z.number().min(0).max(60).optional(),
     title: z.string().min(1).max(60),
     subtitle: z.string().max(60).optional(),
   }),
@@ -109,6 +114,7 @@ export function collectAssetRefs(episode: Episode): string[] {
   if (episode.hook.baitImage) refs.add(episode.hook.baitImage);
   for (const level of [...episode.levels, episode.boss]) {
     for (const clue of level.clues) if (clue.image) refs.add(clue.image);
+    if (level.revealAudio) refs.add(level.revealAudio);
   }
   if (episode.music.track) refs.add(episode.music.track);
   if (episode.music.bossTrack) refs.add(episode.music.bossTrack);
