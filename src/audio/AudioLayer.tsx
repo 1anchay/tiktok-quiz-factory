@@ -22,6 +22,17 @@ export const AudioLayer: React.FC<Props> = ({ episode, timeline }) => {
   const cta = timeline.segments.find((s) => s.kind === "cta")!;
   const total = timeline.durationInFrames;
   const hasBossTrack = Boolean(music.bossTrack);
+  const revealAudioEvents = timeline.segments
+    .filter((s) => s.kind === "level" || s.kind === "boss")
+    .map((segment) => {
+      const level = segment.kind === "boss" ? episode.boss : episode.levels[segment.levelIndex];
+      return {
+        path: level?.revealAudio,
+        volume: level?.revealAudioVolume ?? 1,
+        from: segment.from + segment.revealStart,
+      };
+    })
+    .filter((event): event is { path: string; volume: number; from: number } => Boolean(event.path));
   const cues = useMemo(
     () => buildSfxCues(timeline, episode.hook.title.split(/\s+/).length, Boolean(episode.hook.bait)),
     [timeline, episode.hook.title, episode.hook.bait],
@@ -33,7 +44,17 @@ export const AudioLayer: React.FC<Props> = ({ episode, timeline }) => {
     const bossDuck = hasBossTrack
       ? interpolate(f, [boss.from - 8, boss.from, cta.from, cta.from + 10], [1, 0, 0, 1], clamp)
       : 1;
-    return music.volume * fadeIn * fadeOut * bossDuck;
+    const revealDuck = revealAudioEvents.reduce((duck, event) => {
+      const end = event.from + Math.round(timeline.fps * 2.5);
+      const localDuck = interpolate(
+        f,
+        [event.from - 5, event.from + 2, end - 5, end],
+        [1, 0.2, 0.2, 1],
+        clamp,
+      );
+      return Math.min(duck, localDuck);
+    }, 1);
+    return music.volume * fadeIn * fadeOut * bossDuck * revealDuck;
   };
 
   const bossDuration = cta.from - boss.from + 10;
@@ -53,6 +74,17 @@ export const AudioLayer: React.FC<Props> = ({ episode, timeline }) => {
           />
         </Sequence>
       )}
+
+      {revealAudioEvents.map((event, i) => (
+        <Sequence
+          key={`reveal-audio-${i}`}
+          from={event.from}
+          durationInFrames={Math.round(timeline.fps * 2.6)}
+          name="Meme reveal audio"
+        >
+          <Audio src={staticFile(event.path)} volume={event.volume} />
+        </Sequence>
+      ))}
 
       {cues.map((cue, i) => (
         <Sequence key={`${cue.sound}-${i}`} from={cue.frame} durationInFrames={timeline.fps * 2.2} name={`SFX ${cue.sound}`}>
