@@ -67,7 +67,9 @@
         {
           "image": "images/memes/povar/clue-4.jpg"
         }
-      ]
+      ],
+      "revealAudio": "audio/memes/povar.mp3",
+      "revealAudioVolume": 1
     },
     {
       "answer": "ТОЛИК, ЭТО ПОДЪЕЗД",
@@ -109,7 +111,9 @@
       {
         "image": "images/memes/russkie-domoy/clue-4.jpg"
       }
-    ]
+    ],
+    "revealAudio": "audio/memes/russkie-domoy.mp3",
+    "revealAudioVolume": 1
   },
   "music": {
     "track": "music/digital-lemonade.mp3",
@@ -141,6 +145,6 @@
     "asset_source": "source-video-frames",
     "audio_source": "source-video-clips",
     "goal": "runet-meme-quiz",
-    "audio_status": "Tolik direct MP3 enabled; Povar and Russkie-domoy auto-discovery attempted during asset preparation"
+    "audio_status": "Original reveal clips enabled for Povar, Tolik and Russkie-domoy; Mellstroy and Lev use clean reveal SFX because no reliable direct original audio source was found"
   }
 }
