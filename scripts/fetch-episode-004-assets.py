@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import base64
+import json
 import html
 import re
 import subprocess
@@ -14,7 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 MEMES = [
-    {"slug": "million-dvesti", "video_id": "xYTFYYmUnAc"},
+    {"slug": "tolik-ebolik", "video_id": "qXo1P6QwiI0"},
     {"slug": "lev-rychit", "video_id": "qoeHhTwjkBk"},
     {"slug": "povar", "video_id": "JyD13ifbAN4"},
     {"slug": "tolik", "video_id": "8yvgLoGqDBw"},
@@ -23,6 +24,7 @@ MEMES = [
 
 DIRECT_AUDIO = {
     "tolik": "https://www.myinstants.com/media/sounds/tolik-eto-podezd.mp3",
+    "tolik-ebolik": "https://www.myinstants.com/media/sounds/tolik-ebolik.mp3",
 }
 
 VOICEBOT_CATEGORY = "https://voicebot.su/ru/category/populyarnye-memy/"
@@ -229,14 +231,107 @@ def prepare_audio(slug: str) -> bool:
         return False
 
 
+def download_lion_audio() -> bool:
+    slug = "lev-rychit"
+    out = ROOT / "assets" / "audio" / "memes" / f"{slug}.mp3"
+    if have_file(out, 5000):
+        print(f"lion audio already present: {out.relative_to(ROOT)}")
+        return True
+
+    # Public Coub API exposes standalone audio versions; try them before video extractors.
+    try:
+        data = json.loads(fetch("https://coub.com/api/v2/coubs/17179o").decode("utf-8"))
+        candidates = []
+        def collect(obj, path=""):
+            if isinstance(obj, dict):
+                for key, value in obj.items():
+                    collect(value, path + "/" + key)
+            elif isinstance(obj, list):
+                for value in obj:
+                    collect(value, path)
+            elif isinstance(obj, str) and obj.startswith("http") and (
+                ".mp3" in obj or ("/audio" in path.lower() and any(ext in obj.lower() for ext in (".m4a", ".aac", ".ogg")))
+            ):
+                candidates.append(obj)
+        collect(data)
+        for url in candidates:
+            try:
+                raw = fetch(url)
+                normalize_audio(raw, out)
+                if have_file(out, 5000):
+                    print("original lion meme audio extracted from Coub API")
+                    return True
+            except Exception as exc:
+                print("Coub audio candidate failed:", exc)
+    except Exception as exc:
+        print("Coub API unavailable:", exc)
+
+    # Coub or RuTube downloads are less likely to require a YouTube login.
+    source_urls = [
+        "https://coub.com/view/17179o",
+        "https://coub.com/view/jgr4e",
+        "https://rutube.ru/video/8c5194bacc06fbb1c3649b7300a500c8/",
+    ]
+    with tempfile.TemporaryDirectory() as td:
+        for url in source_urls:
+            try:
+                template = str(Path(td) / "lion.%(ext)s")
+                subprocess.run(
+                    ["python", "-m", "yt_dlp", "--no-playlist", "--retries", "2",
+                     "-f", "bestaudio/best", "-o", template, url],
+                    check=True, timeout=75
+                )
+                found = sorted(Path(td).glob("lion.*"))
+                if found:
+                    subprocess.run(
+                        ["ffmpeg", "-y", "-i", str(found[0]), "-t", "3.0", "-vn",
+                         "-af", "loudnorm=I=-15:TP=-1.5:LRA=7",
+                         "-ar", "44100", "-ac", "2", "-b:a", "160k", str(out)],
+                        check=True,
+                    )
+                    if have_file(out, 5000):
+                        print("original lion meme audio extracted from", url)
+                        return True
+            except Exception as exc:
+                print("Lion source failed", url, exc)
+
+    # Make the meme audible, but explicitly flag synthetic fallback.
+    print("WARNING: original lion clip not available; using narrated fallback")
+    with tempfile.TemporaryDirectory() as td:
+        voice = Path(td) / "lion-voice.wav"
+        subprocess.run([
+            "espeak-ng", "-v", "uk", "-s", "185", "-a", "180",
+            "-w", str(voice), "Хочете я вам зараз розкажу, як лев ричить? А-а-а!"
+        ], check=True)
+        normalize_audio(voice.read_bytes(), out)
+    return have_file(out, 5000)
+
+
+def download_music() -> None:
+    out = ROOT / "assets" / "music" / "monkeys-spinning-monkeys.mp3"
+    if have_file(out, 100000):
+        print("new background music already present")
+        return
+    url = "https://incompetech.com/music/royalty-free/mp3-royaltyfree/Monkeys%20Spinning%20Monkeys.mp3"
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_bytes(fetch(url))
+    if not have_file(out, 100000):
+        raise RuntimeError("Music download was empty or truncated")
+    print("Downloaded Monkeys Spinning Monkeys (CC BY 4.0)")
+
+
 def main() -> None:
-    prepare_bait()
+    approved = ROOT / "assets" / "images" / "hooks" / "episode-004-approved.webp"
+    if not have_file(approved, 2000):
+        raise RuntimeError("Approved user intro artwork not checked in")
     for meme in MEMES:
         prepare_real_frames(meme["slug"], meme["video_id"])
-
-    # Optional original meme snippets. Failures do NOT fail the video build.
-    for slug in ["povar", "tolik", "russkie-domoy"]:
-        prepare_audio(slug)
+    for slug in ["tolik-ebolik", "povar", "tolik", "russkie-domoy"]:
+        if not prepare_audio(slug):
+            raise RuntimeError("Required meme audio missing: " + slug)
+    if not download_lion_audio():
+        raise RuntimeError("Second meme audio still missing")
+    download_music()
 
 
 if __name__ == "__main__":
