@@ -34,7 +34,7 @@ jobs:
       - name: Install media tooling
         run: |
           sudo apt-get update
-          sudo apt-get install -y ffmpeg
+          sudo apt-get install -y ffmpeg espeak-ng
           python -m pip install --disable-pip-version-check pillow yt-dlp
           ffmpeg -version
           ffprobe -version
@@ -47,7 +47,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add assets/images/hooks/episode-004-bait.jpg assets/images/memes assets/audio/memes
+          git add assets/images/hooks/episode-004-approved.webp assets/images/memes assets/audio/memes assets/music/monkeys-spinning-monkeys.mp3
           if git diff --cached --quiet; then
             echo "Episode 004 media already committed."
           else
@@ -82,7 +82,7 @@ jobs:
       - name: Upload final render
         uses: actions/upload-artifact@v4
         with:
-          name: episode-004-runet-memes
+          name: episode-004-memes-audio-v2
           path: |
             output/episode-004.mp4
             output/screenshots/episode-004/*.png
